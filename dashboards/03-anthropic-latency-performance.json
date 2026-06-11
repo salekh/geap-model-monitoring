@@ -1,0 +1,165 @@
+{
+    "displayName": "Anthropic Models - Latency & Performance",
+    "mosaicLayout": {
+        "columns": 48,
+        "tiles": [
+            {
+                "width": 24,
+                "height": 18,
+                "widget": {
+                    "title": "Time to first token - p50 (ms, by model)",
+                    "xyChart": {
+                        "chartOptions": {
+                            "mode": "COLOR"
+                        },
+                        "dataSets": [
+                            {
+                                "plotType": "LINE",
+                                "minAlignmentPeriod": "300s",
+                                "timeSeriesQuery": {
+                                    "timeSeriesFilter": {
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/first_token_latencies\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
+                                        "aggregation": {
+                                            "alignmentPeriod": "300s",
+                                            "perSeriesAligner": "ALIGN_DELTA",
+                                            "crossSeriesReducer": "REDUCE_PERCENTILE_50",
+                                            "groupByFields": [
+                                                "resource.label.\"model_user_id\""
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "xPos": 24,
+                "width": 24,
+                "height": 18,
+                "widget": {
+                    "title": "Time to first token - p95 (ms, by model)",
+                    "xyChart": {
+                        "chartOptions": {
+                            "mode": "COLOR"
+                        },
+                        "dataSets": [
+                            {
+                                "plotType": "LINE",
+                                "minAlignmentPeriod": "300s",
+                                "timeSeriesQuery": {
+                                    "timeSeriesFilter": {
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/first_token_latencies\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
+                                        "aggregation": {
+                                            "alignmentPeriod": "300s",
+                                            "perSeriesAligner": "ALIGN_DELTA",
+                                            "crossSeriesReducer": "REDUCE_PERCENTILE_95",
+                                            "groupByFields": [
+                                                "resource.label.\"model_user_id\""
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "yPos": 18,
+                "width": 24,
+                "height": 18,
+                "widget": {
+                    "title": "End-to-end request latency - p50 (ms, by model)",
+                    "xyChart": {
+                        "chartOptions": {
+                            "mode": "COLOR"
+                        },
+                        "dataSets": [
+                            {
+                                "plotType": "LINE",
+                                "minAlignmentPeriod": "300s",
+                                "timeSeriesQuery": {
+                                    "timeSeriesFilter": {
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_latencies\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
+                                        "aggregation": {
+                                            "alignmentPeriod": "300s",
+                                            "perSeriesAligner": "ALIGN_DELTA",
+                                            "crossSeriesReducer": "REDUCE_PERCENTILE_50",
+                                            "groupByFields": [
+                                                "resource.label.\"model_user_id\""
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "xPos": 24,
+                "yPos": 18,
+                "width": 24,
+                "height": 18,
+                "widget": {
+                    "title": "End-to-end request latency - p99 (ms, by model)",
+                    "xyChart": {
+                        "chartOptions": {
+                            "mode": "COLOR"
+                        },
+                        "dataSets": [
+                            {
+                                "plotType": "LINE",
+                                "minAlignmentPeriod": "300s",
+                                "timeSeriesQuery": {
+                                    "timeSeriesFilter": {
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_latencies\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
+                                        "aggregation": {
+                                            "alignmentPeriod": "300s",
+                                            "perSeriesAligner": "ALIGN_DELTA",
+                                            "crossSeriesReducer": "REDUCE_PERCENTILE_99",
+                                            "groupByFields": [
+                                                "resource.label.\"model_user_id\""
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "yPos": 36,
+                "width": 48,
+                "height": 16,
+                "widget": {
+                    "title": "Latency heatmap - end-to-end distribution (all Anthropic models)",
+                    "xyChart": {
+                        "chartOptions": {
+                            "mode": "COLOR"
+                        },
+                        "dataSets": [
+                            {
+                                "plotType": "HEATMAP",
+                                "minAlignmentPeriod": "300s",
+                                "timeSeriesQuery": {
+                                    "timeSeriesFilter": {
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_latencies\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
+                                        "aggregation": {
+                                            "alignmentPeriod": "300s",
+                                            "perSeriesAligner": "ALIGN_DELTA",
+                                            "crossSeriesReducer": "REDUCE_SUM"
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    }
+}
