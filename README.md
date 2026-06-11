@@ -8,6 +8,7 @@ model-monitoring/
 ├── deploy.sh                  # idempotent deployment script
 ├── README.md                  # this file
 └── dashboards/
+    ├── 00-anthropic-model-usage.json       # at-a-glance usage summary
     ├── 01-fable5-token-usage.json          # Claude Fable 5 — daily token usage
     ├── 02-anthropic-fleet-overview.json    # all Anthropic models — usage overview
     ├── 03-anthropic-latency-performance.json
@@ -95,6 +96,11 @@ exact-match filters in the JSONs to the regex form:
 ---
 
 ## The dashboards
+
+### 00 — Anthropic: Model Usage (at-a-glance summary)
+A compact landing page: four scorecards (total tokens, requests, output tokens,
+errors — last 24h) plus daily tokens by model, daily tokens by type, and an
+hourly usage line. Start here; drill into dashboards 01–06 for detail.
 
 ### 01 — Claude Fable 5: Daily Token Usage
 The original ask: **total tokens consumed per day for one model**

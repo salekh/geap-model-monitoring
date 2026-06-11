@@ -1,0 +1,196 @@
+{
+    "displayName": "Anthropic - Model Usage",
+    "mosaicLayout": {
+        "columns": 48,
+        "tiles": [
+            {
+                "width": 12,
+                "height": 12,
+                "widget": {
+                    "title": "Total tokens (24h)",
+                    "scorecard": {
+                        "timeSeriesQuery": {
+                            "timeSeriesFilter": {
+                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
+                                "aggregation": {
+                                    "alignmentPeriod": "86400s",
+                                    "perSeriesAligner": "ALIGN_SUM",
+                                    "crossSeriesReducer": "REDUCE_SUM"
+                                }
+                            }
+                        },
+                        "sparkChartView": {
+                            "sparkChartType": "SPARK_BAR"
+                        }
+                    }
+                }
+            },
+            {
+                "xPos": 12,
+                "width": 12,
+                "height": 12,
+                "widget": {
+                    "title": "Requests (24h)",
+                    "scorecard": {
+                        "timeSeriesQuery": {
+                            "timeSeriesFilter": {
+                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
+                                "aggregation": {
+                                    "alignmentPeriod": "86400s",
+                                    "perSeriesAligner": "ALIGN_SUM",
+                                    "crossSeriesReducer": "REDUCE_SUM"
+                                }
+                            }
+                        },
+                        "sparkChartView": {
+                            "sparkChartType": "SPARK_BAR"
+                        }
+                    }
+                }
+            },
+            {
+                "xPos": 24,
+                "width": 12,
+                "height": 12,
+                "widget": {
+                    "title": "Output tokens (24h)",
+                    "scorecard": {
+                        "timeSeriesQuery": {
+                            "timeSeriesFilter": {
+                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" metric.label.\"type\"=\"output\"",
+                                "aggregation": {
+                                    "alignmentPeriod": "86400s",
+                                    "perSeriesAligner": "ALIGN_SUM",
+                                    "crossSeriesReducer": "REDUCE_SUM"
+                                }
+                            }
+                        },
+                        "sparkChartView": {
+                            "sparkChartType": "SPARK_BAR"
+                        }
+                    }
+                }
+            },
+            {
+                "xPos": 36,
+                "width": 12,
+                "height": 12,
+                "widget": {
+                    "title": "Errors non-200 (24h)",
+                    "scorecard": {
+                        "timeSeriesQuery": {
+                            "timeSeriesFilter": {
+                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" metric.label.\"response_code\"!=\"200\"",
+                                "aggregation": {
+                                    "alignmentPeriod": "86400s",
+                                    "perSeriesAligner": "ALIGN_SUM",
+                                    "crossSeriesReducer": "REDUCE_SUM"
+                                }
+                            }
+                        },
+                        "sparkChartView": {
+                            "sparkChartType": "SPARK_BAR"
+                        }
+                    }
+                }
+            },
+            {
+                "yPos": 12,
+                "width": 24,
+                "height": 16,
+                "widget": {
+                    "title": "Daily tokens by model",
+                    "xyChart": {
+                        "chartOptions": {
+                            "mode": "COLOR"
+                        },
+                        "dataSets": [
+                            {
+                                "plotType": "STACKED_BAR",
+                                "minAlignmentPeriod": "86400s",
+                                "timeSeriesQuery": {
+                                    "timeSeriesFilter": {
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
+                                        "aggregation": {
+                                            "alignmentPeriod": "86400s",
+                                            "perSeriesAligner": "ALIGN_SUM",
+                                            "crossSeriesReducer": "REDUCE_SUM",
+                                            "groupByFields": [
+                                                "resource.label.\"model_user_id\""
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "xPos": 24,
+                "yPos": 12,
+                "width": 24,
+                "height": 16,
+                "widget": {
+                    "title": "Daily tokens by type (input / output / cache)",
+                    "xyChart": {
+                        "chartOptions": {
+                            "mode": "COLOR"
+                        },
+                        "dataSets": [
+                            {
+                                "plotType": "STACKED_BAR",
+                                "minAlignmentPeriod": "86400s",
+                                "timeSeriesQuery": {
+                                    "timeSeriesFilter": {
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
+                                        "aggregation": {
+                                            "alignmentPeriod": "86400s",
+                                            "perSeriesAligner": "ALIGN_SUM",
+                                            "crossSeriesReducer": "REDUCE_SUM",
+                                            "groupByFields": [
+                                                "metric.label.\"type\""
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "yPos": 28,
+                "width": 48,
+                "height": 16,
+                "widget": {
+                    "title": "Hourly token usage by model",
+                    "xyChart": {
+                        "chartOptions": {
+                            "mode": "COLOR"
+                        },
+                        "dataSets": [
+                            {
+                                "plotType": "LINE",
+                                "minAlignmentPeriod": "3600s",
+                                "timeSeriesQuery": {
+                                    "timeSeriesFilter": {
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
+                                        "aggregation": {
+                                            "alignmentPeriod": "3600s",
+                                            "perSeriesAligner": "ALIGN_SUM",
+                                            "crossSeriesReducer": "REDUCE_SUM",
+                                            "groupByFields": [
+                                                "resource.label.\"model_user_id\""
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    }
+}
