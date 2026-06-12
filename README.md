@@ -1,5 +1,7 @@
 # Anthropic Model Monitoring on GCP (Vertex AI + Cloud Observability)
 
+![Model Usage Dashboard — scorecards showing 6.1M tokens, 132 requests, and token consumption trends](images/model-usage-scorecards.png)
+
 Repeatable, version-controllable Cloud Monitoring dashboards for Anthropic Claude
 models served through **Vertex AI Model Garden**, deployed with a single script.
 
@@ -7,6 +9,10 @@ models served through **Vertex AI Model Garden**, deployed with a single script.
 model-monitoring/
 ├── deploy.sh                  # idempotent deployment script
 ├── README.md                  # this file
+├── images/                    # dashboard screenshots
+│   ├── model-usage-scorecards.png
+│   ├── fleet-overview-daily-volume.png
+│   └── caching-cost-efficiency.png
 └── dashboards/
     ├── 00-anthropic-model-usage.json       # at-a-glance usage summary
     ├── 01-fable5-token-usage.json          # Claude Fable 5 — daily token usage
@@ -102,6 +108,8 @@ A compact landing page: four scorecards (total tokens, requests, output tokens,
 errors — last 24h) plus daily tokens by model, daily tokens by type, and an
 hourly usage line. Start here; drill into dashboards 01–06 for detail.
 
+> *See the screenshot at the top of this README for a live view.*
+
 ### 01 — Claude Fable 5: Daily Token Usage
 The original ask: **total tokens consumed per day for one model**
 (`claude-fable-5`).
@@ -120,6 +128,8 @@ Everything Anthropic in one place — filters on `publisher="anthropic"` only, s
 - Hourly token rate by model
 - Input vs output mix across the fleet
 - Consumed throughput by model
+
+![Fleet Overview — daily tokens and requests broken down by model with section headers](images/fleet-overview-daily-volume.png)
 
 *Use for:* comparing model adoption (e.g. how much traffic moved from Opus to
 Fable 5), capacity planning, the single bookmark for "how much Claude are we
@@ -154,6 +164,8 @@ Caching is the single biggest cost lever for Claude workloads (cache reads cost
   well above the input line for a chat/agent workload, caching is broken
   (a timestamp in the system prompt, unstable tool ordering, etc.)
 - Requests split by `explicit_caching`
+
+![Caching & Cost Efficiency — cache token breakdown and cost scorecards showing 4.5M cached vs 144k uncached tokens](images/caching-cost-efficiency.png)
 
 *Use for:* verifying `cache_control` actually works after deployments,
 quantifying savings, catching silent cache invalidation regressions.
