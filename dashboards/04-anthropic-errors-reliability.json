@@ -1,9 +1,48 @@
 {
     "displayName": "Anthropic Models - Errors & Reliability",
+    "dashboardFilters": [
+        {
+            "labelKey": "resource.label.\"model_user_id\"",
+            "templateVariable": "model_id",
+            "filterType": "RESOURCE_LABEL"
+        }
+    ],
     "mosaicLayout": {
         "columns": 48,
         "tiles": [
             {
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "title": "",
+                    "text": {
+                        "content": "## 🛡️ Errors & Reliability\nTrack request success/failure rates, error categories, and throttling events. Scorecards highlight 24h totals with color-coded thresholds for rapid triage.",
+                        "format": "MARKDOWN",
+                        "style": {
+                            "backgroundColor": "#2A0A0A",
+                            "textColor": "#E0E0E0",
+                            "fontSize": "FS_MEDIUM",
+                            "padding": "P_MEDIUM",
+                            "horizontalAlignment": "H_LEFT",
+                            "verticalAlignment": "V_CENTER"
+                        }
+                    }
+                }
+            },
+            {
+                "yPos": 4,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Response codes and error category breakdown",
+                        "dividerBelow": true
+                    },
+                    "title": "📊 Error Breakdown"
+                }
+            },
+            {
+                "yPos": 8,
                 "width": 24,
                 "height": 18,
                 "widget": {
@@ -36,6 +75,7 @@
             },
             {
                 "xPos": 24,
+                "yPos": 8,
                 "width": 24,
                 "height": 18,
                 "widget": {
@@ -68,11 +108,23 @@
                 }
             },
             {
-                "yPos": 18,
-                "width": 16,
-                "height": 16,
+                "yPos": 26,
+                "width": 48,
+                "height": 4,
                 "widget": {
-                    "title": "Successful requests (last 24h)",
+                    "sectionHeader": {
+                        "subtitle": "Rolling 24-hour success, failure, and throttle counts",
+                        "dividerBelow": true
+                    },
+                    "title": "🔑 24h Reliability Scorecards"
+                }
+            },
+            {
+                "yPos": 30,
+                "width": 16,
+                "height": 14,
+                "widget": {
+                    "title": "✅ Successful requests (24h)",
                     "scorecard": {
                         "timeSeriesQuery": {
                             "timeSeriesFilter": {
@@ -85,18 +137,18 @@
                             }
                         },
                         "sparkChartView": {
-                            "sparkChartType": "SPARK_BAR"
+                            "sparkChartType": "SPARK_LINE"
                         }
                     }
                 }
             },
             {
                 "xPos": 16,
-                "yPos": 18,
+                "yPos": 30,
                 "width": 16,
-                "height": 16,
+                "height": 14,
                 "widget": {
-                    "title": "Failed requests (last 24h)",
+                    "title": "❌ Failed requests (24h)",
                     "scorecard": {
                         "timeSeriesQuery": {
                             "timeSeriesFilter": {
@@ -110,17 +162,31 @@
                         },
                         "sparkChartView": {
                             "sparkChartType": "SPARK_BAR"
-                        }
+                        },
+                        "thresholds": [
+                            {
+                                "value": 10,
+                                "color": "YELLOW",
+                                "direction": "ABOVE",
+                                "label": "Failures present"
+                            },
+                            {
+                                "value": 100,
+                                "color": "RED",
+                                "direction": "ABOVE",
+                                "label": "High failure count"
+                            }
+                        ]
                     }
                 }
             },
             {
                 "xPos": 32,
-                "yPos": 18,
+                "yPos": 30,
                 "width": 16,
-                "height": 16,
+                "height": 14,
                 "widget": {
-                    "title": "Throttled / quota errors 429 (last 24h)",
+                    "title": "🚫 Throttled / 429 errors (24h)",
                     "scorecard": {
                         "timeSeriesQuery": {
                             "timeSeriesFilter": {
@@ -134,12 +200,38 @@
                         },
                         "sparkChartView": {
                             "sparkChartType": "SPARK_BAR"
-                        }
+                        },
+                        "thresholds": [
+                            {
+                                "value": 1,
+                                "color": "YELLOW",
+                                "direction": "ABOVE",
+                                "label": "Throttling detected"
+                            },
+                            {
+                                "value": 50,
+                                "color": "RED",
+                                "direction": "ABOVE",
+                                "label": "Heavy throttling"
+                            }
+                        ]
                     }
                 }
             },
             {
-                "yPos": 34,
+                "yPos": 44,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Hourly error rate trend broken down by model",
+                        "dividerBelow": true
+                    },
+                    "title": "📈 Error Rate Trend"
+                }
+            },
+            {
+                "yPos": 48,
                 "width": 48,
                 "height": 16,
                 "widget": {

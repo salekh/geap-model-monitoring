@@ -1,9 +1,48 @@
 {
     "displayName": "Anthropic - Model Usage",
+    "dashboardFilters": [
+        {
+            "labelKey": "resource.label.\"model_user_id\"",
+            "templateVariable": "model_id",
+            "filterType": "RESOURCE_LABEL"
+        }
+    ],
     "mosaicLayout": {
         "columns": 48,
         "tiles": [
             {
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "title": "",
+                    "text": {
+                        "content": "## 📊 Anthropic Model Usage Dashboard\nReal-time visibility into token consumption, request volumes, and error counts across all Anthropic models. Use the **model filter** above to drill into a specific model.",
+                        "format": "MARKDOWN",
+                        "style": {
+                            "backgroundColor": "#1A1A2E",
+                            "textColor": "#E0E0E0",
+                            "fontSize": "FS_MEDIUM",
+                            "padding": "P_MEDIUM",
+                            "horizontalAlignment": "H_LEFT",
+                            "verticalAlignment": "V_CENTER"
+                        }
+                    }
+                }
+            },
+            {
+                "yPos": 4,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Key figures from the last 24 hours",
+                        "dividerBelow": true
+                    },
+                    "title": "🔑 Key Metrics"
+                }
+            },
+            {
+                "yPos": 8,
                 "width": 12,
                 "height": 12,
                 "widget": {
@@ -20,13 +59,28 @@
                             }
                         },
                         "sparkChartView": {
-                            "sparkChartType": "SPARK_BAR"
-                        }
+                            "sparkChartType": "SPARK_LINE"
+                        },
+                        "thresholds": [
+                            {
+                                "value": 50000000,
+                                "color": "YELLOW",
+                                "direction": "ABOVE",
+                                "label": "High usage"
+                            },
+                            {
+                                "value": 100000000,
+                                "color": "RED",
+                                "direction": "ABOVE",
+                                "label": "Very high"
+                            }
+                        ]
                     }
                 }
             },
             {
                 "xPos": 12,
+                "yPos": 8,
                 "width": 12,
                 "height": 12,
                 "widget": {
@@ -43,13 +97,14 @@
                             }
                         },
                         "sparkChartView": {
-                            "sparkChartType": "SPARK_BAR"
+                            "sparkChartType": "SPARK_LINE"
                         }
                     }
                 }
             },
             {
                 "xPos": 24,
+                "yPos": 8,
                 "width": 12,
                 "height": 12,
                 "widget": {
@@ -66,17 +121,18 @@
                             }
                         },
                         "sparkChartView": {
-                            "sparkChartType": "SPARK_BAR"
+                            "sparkChartType": "SPARK_LINE"
                         }
                     }
                 }
             },
             {
                 "xPos": 36,
+                "yPos": 8,
                 "width": 12,
                 "height": 12,
                 "widget": {
-                    "title": "Errors non-200 (24h)",
+                    "title": "⚠️ Errors non-200 (24h)",
                     "scorecard": {
                         "timeSeriesQuery": {
                             "timeSeriesFilter": {
@@ -90,12 +146,38 @@
                         },
                         "sparkChartView": {
                             "sparkChartType": "SPARK_BAR"
-                        }
+                        },
+                        "thresholds": [
+                            {
+                                "value": 10,
+                                "color": "YELLOW",
+                                "direction": "ABOVE",
+                                "label": "Errors present"
+                            },
+                            {
+                                "value": 100,
+                                "color": "RED",
+                                "direction": "ABOVE",
+                                "label": "High error count"
+                            }
+                        ]
                     }
                 }
             },
             {
-                "yPos": 12,
+                "yPos": 20,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Daily and hourly breakdowns of token consumption by model and type",
+                        "dividerBelow": true
+                    },
+                    "title": "📈 Token Consumption Trends"
+                }
+            },
+            {
+                "yPos": 24,
                 "width": 24,
                 "height": 16,
                 "widget": {
@@ -128,7 +210,7 @@
             },
             {
                 "xPos": 24,
-                "yPos": 12,
+                "yPos": 24,
                 "width": 24,
                 "height": 16,
                 "widget": {
@@ -160,7 +242,7 @@
                 }
             },
             {
-                "yPos": 28,
+                "yPos": 40,
                 "width": 48,
                 "height": 16,
                 "widget": {
@@ -171,7 +253,7 @@
                         },
                         "dataSets": [
                             {
-                                "plotType": "LINE",
+                                "plotType": "STACKED_AREA",
                                 "minAlignmentPeriod": "3600s",
                                 "timeSeriesQuery": {
                                     "timeSeriesFilter": {

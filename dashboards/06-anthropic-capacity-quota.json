@@ -1,9 +1,48 @@
 {
     "displayName": "Anthropic Models - Capacity, Quota & Request Shape",
+    "dashboardFilters": [
+        {
+            "labelKey": "resource.label.\"model_user_id\"",
+            "templateVariable": "model_id",
+            "filterType": "RESOURCE_LABEL"
+        }
+    ],
     "mosaicLayout": {
         "columns": 48,
         "tiles": [
             {
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "title": "",
+                    "text": {
+                        "content": "## 🏗️ Capacity, Quota & Request Shape\nUnderstand your capacity posture — shared vs provisioned routing, request size distributions, throughput consumption, and API method usage patterns.",
+                        "format": "MARKDOWN",
+                        "style": {
+                            "backgroundColor": "#1A2E0A",
+                            "textColor": "#E0E0E0",
+                            "fontSize": "FS_MEDIUM",
+                            "padding": "P_MEDIUM",
+                            "horizontalAlignment": "H_LEFT",
+                            "verticalAlignment": "V_CENTER"
+                        }
+                    }
+                }
+            },
+            {
+                "yPos": 4,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Shared vs provisioned/dedicated request routing and input token size buckets",
+                        "dividerBelow": true
+                    },
+                    "title": "📊 Request Routing & Input Size"
+                }
+            },
+            {
+                "yPos": 8,
                 "width": 24,
                 "height": 18,
                 "widget": {
@@ -37,6 +76,7 @@
             },
             {
                 "xPos": 24,
+                "yPos": 8,
                 "width": 24,
                 "height": 18,
                 "widget": {
@@ -68,7 +108,19 @@
                 }
             },
             {
-                "yPos": 18,
+                "yPos": 26,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Output token size distribution and consumed throughput per model",
+                        "dividerBelow": true
+                    },
+                    "title": "📤 Output Size & Throughput"
+                }
+            },
+            {
+                "yPos": 30,
                 "width": 24,
                 "height": 16,
                 "widget": {
@@ -101,7 +153,7 @@
             },
             {
                 "xPos": 24,
-                "yPos": 18,
+                "yPos": 30,
                 "width": 24,
                 "height": 16,
                 "widget": {
@@ -112,7 +164,7 @@
                         },
                         "dataSets": [
                             {
-                                "plotType": "LINE",
+                                "plotType": "STACKED_AREA",
                                 "minAlignmentPeriod": "3600s",
                                 "timeSeriesQuery": {
                                     "timeSeriesFilter": {
@@ -133,7 +185,19 @@
                 }
             },
             {
-                "yPos": 34,
+                "yPos": 46,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Breakdown by API method — rawPredict vs streamRawPredict",
+                        "dividerBelow": true
+                    },
+                    "title": "🔌 API Method Usage"
+                }
+            },
+            {
+                "yPos": 50,
                 "width": 48,
                 "height": 16,
                 "widget": {

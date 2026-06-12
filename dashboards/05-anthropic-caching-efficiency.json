@@ -1,9 +1,48 @@
 {
     "displayName": "Anthropic Models - Prompt Caching & Cost Efficiency",
+    "dashboardFilters": [
+        {
+            "labelKey": "resource.label.\"model_user_id\"",
+            "templateVariable": "model_id",
+            "filterType": "RESOURCE_LABEL"
+        }
+    ],
     "mosaicLayout": {
         "columns": 48,
         "tiles": [
             {
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "title": "",
+                    "text": {
+                        "content": "## 💰 Prompt Caching & Cost Efficiency\nAnalyze how effectively prompt caching reduces input token costs. **Cache-read tokens** are up to 90% cheaper — maximize the green to minimize spend.",
+                        "format": "MARKDOWN",
+                        "style": {
+                            "backgroundColor": "#0A2E1A",
+                            "textColor": "#E0E0E0",
+                            "fontSize": "FS_MEDIUM",
+                            "padding": "P_MEDIUM",
+                            "horizontalAlignment": "H_LEFT",
+                            "verticalAlignment": "V_CENTER"
+                        }
+                    }
+                }
+            },
+            {
+                "yPos": 4,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Daily cache-read, cache-write, and uncached input token volumes",
+                        "dividerBelow": true
+                    },
+                    "title": "📊 Cache Token Breakdown"
+                }
+            },
+            {
+                "yPos": 8,
                 "width": 48,
                 "height": 18,
                 "widget": {
@@ -35,11 +74,23 @@
                 }
             },
             {
-                "yPos": 18,
-                "width": 24,
-                "height": 16,
+                "yPos": 26,
+                "width": 48,
+                "height": 4,
                 "widget": {
-                    "title": "Cache read tokens (last 24h) - cheap tokens",
+                    "sectionHeader": {
+                        "subtitle": "24-hour comparison of cheap (cached) vs full-price (uncached) input tokens",
+                        "dividerBelow": true
+                    },
+                    "title": "🔑 Cost Scorecards"
+                }
+            },
+            {
+                "yPos": 30,
+                "width": 24,
+                "height": 14,
+                "widget": {
+                    "title": "💚 Cache read tokens (24h) — cheap",
                     "scorecard": {
                         "timeSeriesQuery": {
                             "timeSeriesFilter": {
@@ -52,18 +103,18 @@
                             }
                         },
                         "sparkChartView": {
-                            "sparkChartType": "SPARK_BAR"
+                            "sparkChartType": "SPARK_LINE"
                         }
                     }
                 }
             },
             {
                 "xPos": 24,
-                "yPos": 18,
+                "yPos": 30,
                 "width": 24,
-                "height": 16,
+                "height": 14,
                 "widget": {
-                    "title": "Uncached input tokens (last 24h) - full-price tokens",
+                    "title": "🔴 Uncached input tokens (24h) — full price",
                     "scorecard": {
                         "timeSeriesQuery": {
                             "timeSeriesFilter": {
@@ -76,13 +127,39 @@
                             }
                         },
                         "sparkChartView": {
-                            "sparkChartType": "SPARK_BAR"
-                        }
+                            "sparkChartType": "SPARK_LINE"
+                        },
+                        "thresholds": [
+                            {
+                                "value": 10000000,
+                                "color": "YELLOW",
+                                "direction": "ABOVE",
+                                "label": "High uncached"
+                            },
+                            {
+                                "value": 50000000,
+                                "color": "RED",
+                                "direction": "ABOVE",
+                                "label": "Very high"
+                            }
+                        ]
                     }
                 }
             },
             {
-                "yPos": 34,
+                "yPos": 44,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Hourly trends for cache efficiency and explicit caching adoption",
+                        "dividerBelow": true
+                    },
+                    "title": "📈 Caching Trends"
+                }
+            },
+            {
+                "yPos": 48,
                 "width": 24,
                 "height": 16,
                 "widget": {
@@ -93,7 +170,7 @@
                         },
                         "dataSets": [
                             {
-                                "plotType": "LINE",
+                                "plotType": "STACKED_AREA",
                                 "minAlignmentPeriod": "3600s",
                                 "timeSeriesQuery": {
                                     "timeSeriesFilter": {
@@ -115,7 +192,7 @@
             },
             {
                 "xPos": 24,
-                "yPos": 34,
+                "yPos": 48,
                 "width": 24,
                 "height": 16,
                 "widget": {

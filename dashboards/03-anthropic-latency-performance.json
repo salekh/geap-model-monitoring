@@ -1,13 +1,52 @@
 {
     "displayName": "Anthropic Models - Latency & Performance",
+    "dashboardFilters": [
+        {
+            "labelKey": "resource.label.\"model_user_id\"",
+            "templateVariable": "model_id",
+            "filterType": "RESOURCE_LABEL"
+        }
+    ],
     "mosaicLayout": {
         "columns": 48,
         "tiles": [
             {
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "title": "",
+                    "text": {
+                        "content": "## ⚡ Latency & Performance\nMonitor **time-to-first-token** and **end-to-end request latency** at p50, p95, and p99. The heatmap at the bottom reveals the full distribution shape.",
+                        "format": "MARKDOWN",
+                        "style": {
+                            "backgroundColor": "#1A0A2E",
+                            "textColor": "#E0E0E0",
+                            "fontSize": "FS_MEDIUM",
+                            "padding": "P_MEDIUM",
+                            "horizontalAlignment": "H_LEFT",
+                            "verticalAlignment": "V_CENTER"
+                        }
+                    }
+                }
+            },
+            {
+                "yPos": 4,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "How quickly does the model start responding? (5-min aligned)",
+                        "dividerBelow": true
+                    },
+                    "title": "🏎️ Time to First Token"
+                }
+            },
+            {
+                "yPos": 8,
                 "width": 24,
                 "height": 18,
                 "widget": {
-                    "title": "Time to first token - p50 (ms, by model)",
+                    "title": "Time to first token — p50 (ms, by model)",
                     "xyChart": {
                         "chartOptions": {
                             "mode": "COLOR"
@@ -30,16 +69,20 @@
                                     }
                                 }
                             }
-                        ]
+                        ],
+                        "yAxis": {
+                            "label": "ms"
+                        }
                     }
                 }
             },
             {
                 "xPos": 24,
+                "yPos": 8,
                 "width": 24,
                 "height": 18,
                 "widget": {
-                    "title": "Time to first token - p95 (ms, by model)",
+                    "title": "Time to first token — p95 (ms, by model)",
                     "xyChart": {
                         "chartOptions": {
                             "mode": "COLOR"
@@ -62,16 +105,31 @@
                                     }
                                 }
                             }
-                        ]
+                        ],
+                        "yAxis": {
+                            "label": "ms"
+                        }
                     }
                 }
             },
             {
-                "yPos": 18,
+                "yPos": 26,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Total round-trip time from request to complete response",
+                        "dividerBelow": true
+                    },
+                    "title": "🕐 End-to-End Latency"
+                }
+            },
+            {
+                "yPos": 30,
                 "width": 24,
                 "height": 18,
                 "widget": {
-                    "title": "End-to-end request latency - p50 (ms, by model)",
+                    "title": "End-to-end request latency — p50 (ms, by model)",
                     "xyChart": {
                         "chartOptions": {
                             "mode": "COLOR"
@@ -94,17 +152,20 @@
                                     }
                                 }
                             }
-                        ]
+                        ],
+                        "yAxis": {
+                            "label": "ms"
+                        }
                     }
                 }
             },
             {
                 "xPos": 24,
-                "yPos": 18,
+                "yPos": 30,
                 "width": 24,
                 "height": 18,
                 "widget": {
-                    "title": "End-to-end request latency - p99 (ms, by model)",
+                    "title": "End-to-end request latency — p99 (ms, by model)",
                     "xyChart": {
                         "chartOptions": {
                             "mode": "COLOR"
@@ -127,16 +188,31 @@
                                     }
                                 }
                             }
-                        ]
+                        ],
+                        "yAxis": {
+                            "label": "ms"
+                        }
                     }
                 }
             },
             {
-                "yPos": 36,
+                "yPos": 48,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Full latency distribution — spot outliers and multi-modal patterns",
+                        "dividerBelow": true
+                    },
+                    "title": "🌡️ Latency Heatmap"
+                }
+            },
+            {
+                "yPos": 52,
                 "width": 48,
                 "height": 16,
                 "widget": {
-                    "title": "Latency heatmap - end-to-end distribution (all Anthropic models)",
+                    "title": "Latency heatmap — end-to-end distribution (all Anthropic models)",
                     "xyChart": {
                         "chartOptions": {
                             "mode": "COLOR"

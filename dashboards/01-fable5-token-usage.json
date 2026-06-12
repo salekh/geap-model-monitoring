@@ -1,11 +1,44 @@
 {
     "displayName": "Claude Fable 5 - Daily Token Usage",
+    "dashboardFilters": [],
     "mosaicLayout": {
         "columns": 48,
         "tiles": [
             {
                 "width": 48,
-                "height": 20,
+                "height": 4,
+                "widget": {
+                    "title": "",
+                    "text": {
+                        "content": "## 🦊 Claude Fable 5 — Token Usage\nDedicated view for **Claude Fable 5** model usage. Tracks token consumption by type, daily totals, and hourly rate trends.",
+                        "format": "MARKDOWN",
+                        "style": {
+                            "backgroundColor": "#1B1B3A",
+                            "textColor": "#E0E0E0",
+                            "fontSize": "FS_MEDIUM",
+                            "padding": "P_MEDIUM",
+                            "horizontalAlignment": "H_LEFT",
+                            "verticalAlignment": "V_CENTER"
+                        }
+                    }
+                }
+            },
+            {
+                "yPos": 4,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Stacked daily breakdown of input, output, and cached tokens",
+                        "dividerBelow": true
+                    },
+                    "title": "📊 Daily Token Breakdown"
+                }
+            },
+            {
+                "yPos": 8,
+                "width": 48,
+                "height": 18,
                 "widget": {
                     "title": "Tokens per day by type (input / output / cache)",
                     "xyChart": {
@@ -35,9 +68,21 @@
                 }
             },
             {
-                "yPos": 20,
+                "yPos": 26,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Rolling 24-hour token summaries",
+                        "dividerBelow": true
+                    },
+                    "title": "🔑 24h Scorecards"
+                }
+            },
+            {
+                "yPos": 30,
                 "width": 16,
-                "height": 16,
+                "height": 14,
                 "widget": {
                     "title": "Total tokens (last 24h)",
                     "scorecard": {
@@ -52,16 +97,30 @@
                             }
                         },
                         "sparkChartView": {
-                            "sparkChartType": "SPARK_BAR"
-                        }
+                            "sparkChartType": "SPARK_LINE"
+                        },
+                        "thresholds": [
+                            {
+                                "value": 10000000,
+                                "color": "YELLOW",
+                                "direction": "ABOVE",
+                                "label": "High usage"
+                            },
+                            {
+                                "value": 50000000,
+                                "color": "RED",
+                                "direction": "ABOVE",
+                                "label": "Very high"
+                            }
+                        ]
                     }
                 }
             },
             {
                 "xPos": 16,
-                "yPos": 20,
+                "yPos": 30,
                 "width": 16,
-                "height": 16,
+                "height": 14,
                 "widget": {
                     "title": "Output tokens (last 24h)",
                     "scorecard": {
@@ -76,16 +135,16 @@
                             }
                         },
                         "sparkChartView": {
-                            "sparkChartType": "SPARK_BAR"
+                            "sparkChartType": "SPARK_LINE"
                         }
                     }
                 }
             },
             {
                 "xPos": 32,
-                "yPos": 20,
+                "yPos": 30,
                 "width": 16,
-                "height": 16,
+                "height": 14,
                 "widget": {
                     "title": "Input tokens (last 24h)",
                     "scorecard": {
@@ -100,13 +159,25 @@
                             }
                         },
                         "sparkChartView": {
-                            "sparkChartType": "SPARK_BAR"
+                            "sparkChartType": "SPARK_LINE"
                         }
                     }
                 }
             },
             {
-                "yPos": 36,
+                "yPos": 44,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Hourly resolution view of token generation rates",
+                        "dividerBelow": true
+                    },
+                    "title": "⏱️ Hourly Rate Trends"
+                }
+            },
+            {
+                "yPos": 48,
                 "width": 48,
                 "height": 16,
                 "widget": {
@@ -117,7 +188,7 @@
                         },
                         "dataSets": [
                             {
-                                "plotType": "LINE",
+                                "plotType": "STACKED_AREA",
                                 "minAlignmentPeriod": "3600s",
                                 "timeSeriesQuery": {
                                     "timeSeriesFilter": {
