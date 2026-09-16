@@ -73,17 +73,17 @@ The script is **idempotent**: dashboards are matched by `displayName`. When `--b
 ## Recursive Self-Improvement Lineage & Version Preservation
 
 Every version of the dashboard suite is preserved across three independent layers:
-1. **Git Tags**: `v1.0.0`, `v2.0.0`, `old`, `v3.1.0-iter1`, `v3.2.0-iter2`, `v3.3.0-final`, `v3.0.0`, `new`.
+1. **Git Tags**: `v1.0.0` (initial baseline), `v2.0.0` (previous visual baseline), `v3.0.0` (recursively self-improved release).
 2. **Filesystem Directories**: `dashboards/versions/<version>/` and `images/versions/v2.0-old/`.
 3. **Cloud Monitoring Resource Labels (`labels`)**: Every JSON embeds structured metadata tags (`"publisher": "anthropic"`, `"suite": "geap-model-monitoring"`, `"version": "v3-3-final"`).
 
-| Version Tag | Key Self-Critique & Recursive Upgrades Implemented |
-|---|---|
-| **`v1.0-original`** (`v1.0.0`) | Initial baseline 7 dashboards (`00`–`06`) with raw metric counts and basic stacked bar/line charts. |
-| **`v2.0-old`** (`v2.0.0` / `old`) | Added dark header banners, section headers, basic sparklines, and a single `model_user_id` filter (0 filters on Fable 5). |
-| **`v3.1-iter1`** (`v3.1.0-iter1`) | **Critique:** Single-dimension filtering (`model_user_id`) hid regional 429 quota spikes and version regressions; raw count scorecards fluctuated with diurnal traffic.<br>**Upgrade:** Added multi-dimensional interactive `dashboardFilters` (`location`, `model_version_id`, `method`, `response_code`, `explicit_caching`) to all 7 dashboards; added native `timeSeriesFilterRatio` scorecards (**Error Rate %**, **Cache Hit Ratio %**, **Avg Tokens/Req**, **Streaming %**); added 24h Latency Scorecards to Dashboard 03. |
-| **`v3.2-iter2`** (`v3.2.0-iter2`) | **Critique:** Stacked bars obscured proportional shares; siloed p50/p95 charts hid tail latency amplification; volume and errors lived on separate charts.<br>**Upgrade:** Added native `pieChart` (**Donut**) visualizations for instant proportional comprehension; added **Dual-Axis (`yAxis Y1` + `y2Axis Y2`)** overlay charts correlating request volume directly against errors, p95 latency, and cache writes; unified multi-percentile (**p50, p95, p99**) latency curves with horizontal SLO reference lines; added **TTFT Distribution Heatmap**. |
-| **`v3.3-final`** (`v3.3.0-final` / `new`) | **Critique:** Incident responders and FinOps engineers need exact sortable tabular numbers per model/region and mathematical break-even rules right next to charts.<br>**Upgrade:** Added live **Tabular Leaderboards (`timeSeriesTable` with `metricVisualization: "BAR"`)** to all 7 dashboards; embedded **FinOps Cache Break-Even Formulas** and **SRE Incident Triage Playbooks** directly in dashboard tiles. |
+| Directory Version | Git Tag | Key Self-Critique & Recursive Upgrades Implemented |
+|---|---|---|
+| **`v1.0-original`** | `v1.0.0` | Initial baseline 7 dashboards (`00`–`06`) with raw metric counts and basic stacked bar/line charts. |
+| **`v2.0-old`** | `v2.0.0` | Added dark header banners, section headers, basic sparklines, and a single `model_user_id` filter (0 filters on Fable 5). |
+| **`v3.1-iter1`** | *(Iter 1)* | **Critique:** Single-dimension filtering (`model_user_id`) hid regional 429 quota spikes and version regressions; raw count scorecards fluctuated with diurnal traffic.<br>**Upgrade:** Added multi-dimensional interactive `dashboardFilters` (`location`, `model_version_id`, `method`, `response_code`, `explicit_caching`) to all 7 dashboards; added native `timeSeriesFilterRatio` scorecards (**Error Rate %**, **Cache Hit Ratio %**, **Avg Tokens/Req**, **Streaming %**); added 24h Latency Scorecards to Dashboard 03. |
+| **`v3.2-iter2`** | *(Iter 2)* | **Critique:** Stacked bars obscured proportional shares; siloed p50/p95 charts hid tail latency amplification; volume and errors lived on separate charts.<br>**Upgrade:** Added native `pieChart` (**Donut**) visualizations for instant proportional comprehension; added **Dual-Axis (`yAxis Y1` + `y2Axis Y2`)** overlay charts correlating request volume directly against errors, p95 latency, and cache writes; unified multi-percentile (**p50, p95, p99**) latency curves with horizontal SLO reference lines; added **TTFT Distribution Heatmap**. |
+| **`v3.3-final`** | `v3.0.0` | **Critique:** Incident responders and FinOps engineers need exact sortable tabular numbers per model/region and mathematical break-even rules right next to charts.<br>**Upgrade:** Added live **Tabular Leaderboards (`timeSeriesTable` with `metricVisualization: "BAR"`)** to all 7 dashboards; embedded **FinOps Cache Break-Even Formulas** and **SRE Incident Triage Playbooks** directly in dashboard tiles. |
 
 ---
 
