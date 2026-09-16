@@ -4,43 +4,26 @@
         "publisher": "anthropic",
         "platform": "vertex-ai",
         "suite": "geap-model-monitoring",
-        "version": "v3-1-iter1",
-        "dashboard-id": "00-model-usage"
+        "version": "v2-0-old",
+        "dashboard-id": "00-anthropic-model-usage"
     },
     "dashboardFilters": [
         {
             "labelKey": "resource.label.\"model_user_id\"",
             "templateVariable": "model_id",
             "filterType": "RESOURCE_LABEL"
-        },
-        {
-            "labelKey": "resource.label.\"location\"",
-            "templateVariable": "location",
-            "filterType": "RESOURCE_LABEL"
-        },
-        {
-            "labelKey": "resource.label.\"model_version_id\"",
-            "templateVariable": "model_version",
-            "filterType": "RESOURCE_LABEL"
-        },
-        {
-            "labelKey": "metric.label.\"method\"",
-            "templateVariable": "api_method",
-            "filterType": "METRIC_LABEL"
         }
     ],
     "mosaicLayout": {
         "columns": 48,
         "tiles": [
             {
-                "xPos": 0,
-                "yPos": 0,
                 "width": 48,
-                "height": 5,
+                "height": 4,
                 "widget": {
                     "title": "",
                     "text": {
-                        "content": "## \ud83d\udcca Anthropic Model Usage Dashboard  `[v3.1-iter1]`\nExecutive summary of token consumption, request volumes, tokens/request efficiency, and error ratios across all Anthropic models.\n\n**Suite Navigation:** **[00 Usage Summary]** | 01 Fable 5 Deep-Dive | 02 Fleet Overview | 03 Latency & SLOs | 04 Errors & Reliability | 05 Caching & FinOps | 06 Capacity & Quota  \n*Interactive Filters active above: filter dynamically by Model, Region (`location`), Version (`model_version_id`), and API Method (`method`).*",
+                        "content": "## \ud83d\udcca Anthropic Model Usage Dashboard\nReal-time visibility into token consumption, request volumes, and error counts across all Anthropic models. Use the **model filter** above to drill into a specific model.",
                         "format": "MARKDOWN",
                         "style": {
                             "backgroundColor": "#1A1A2E",
@@ -54,22 +37,20 @@
                 }
             },
             {
-                "xPos": 0,
-                "yPos": 5,
+                "yPos": 4,
                 "width": 48,
                 "height": 4,
                 "widget": {
-                    "title": "\ud83d\udd11 Executive 24h Key Metrics & Ratios",
                     "sectionHeader": {
-                        "subtitle": "Volume scorecards paired with normalized Tokens/Request and Error Rate ratios",
+                        "subtitle": "Key figures from the last 24 hours",
                         "dividerBelow": true
-                    }
+                    },
+                    "title": "\ud83d\udd11 Key Metrics"
                 }
             },
             {
-                "xPos": 0,
-                "yPos": 9,
-                "width": 8,
+                "yPos": 8,
+                "width": 12,
                 "height": 12,
                 "widget": {
                     "title": "Total tokens (24h)",
@@ -92,7 +73,7 @@
                                 "value": 50000000,
                                 "color": "YELLOW",
                                 "direction": "ABOVE",
-                                "label": "High"
+                                "label": "High usage"
                             },
                             {
                                 "value": 100000000,
@@ -105,9 +86,9 @@
                 }
             },
             {
-                "xPos": 8,
-                "yPos": 9,
-                "width": 8,
+                "xPos": 12,
+                "yPos": 8,
+                "width": 12,
                 "height": 12,
                 "widget": {
                     "title": "Requests (24h)",
@@ -129,43 +110,9 @@
                 }
             },
             {
-                "xPos": 16,
-                "yPos": 9,
-                "width": 8,
-                "height": 12,
-                "widget": {
-                    "title": "Avg Tokens / Request (24h)",
-                    "scorecard": {
-                        "timeSeriesQuery": {
-                            "timeSeriesFilterRatio": {
-                                "numerator": {
-                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
-                                    "aggregation": {
-                                        "alignmentPeriod": "86400s",
-                                        "perSeriesAligner": "ALIGN_SUM",
-                                        "crossSeriesReducer": "REDUCE_SUM"
-                                    }
-                                },
-                                "denominator": {
-                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
-                                    "aggregation": {
-                                        "alignmentPeriod": "86400s",
-                                        "perSeriesAligner": "ALIGN_SUM",
-                                        "crossSeriesReducer": "REDUCE_SUM"
-                                    }
-                                }
-                            }
-                        },
-                        "sparkChartView": {
-                            "sparkChartType": "SPARK_LINE"
-                        }
-                    }
-                }
-            },
-            {
                 "xPos": 24,
-                "yPos": 9,
-                "width": 8,
+                "yPos": 8,
+                "width": 12,
                 "height": 12,
                 "widget": {
                     "title": "Output tokens (24h)",
@@ -187,9 +134,9 @@
                 }
             },
             {
-                "xPos": 32,
-                "yPos": 9,
-                "width": 8,
+                "xPos": 36,
+                "yPos": 8,
+                "width": 12,
                 "height": 12,
                 "widget": {
                     "title": "\u26a0\ufe0f Errors non-200 (24h)",
@@ -212,82 +159,32 @@
                                 "value": 10,
                                 "color": "YELLOW",
                                 "direction": "ABOVE",
-                                "label": "Present"
+                                "label": "Errors present"
                             },
                             {
                                 "value": 100,
                                 "color": "RED",
                                 "direction": "ABOVE",
-                                "label": "High"
+                                "label": "High error count"
                             }
                         ]
                     }
                 }
             },
             {
-                "xPos": 40,
-                "yPos": 9,
-                "width": 8,
-                "height": 12,
-                "widget": {
-                    "title": "Error Rate Ratio (24h)",
-                    "scorecard": {
-                        "timeSeriesQuery": {
-                            "timeSeriesFilterRatio": {
-                                "numerator": {
-                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" metric.label.\"response_code\"!=\"200\"",
-                                    "aggregation": {
-                                        "alignmentPeriod": "86400s",
-                                        "perSeriesAligner": "ALIGN_SUM",
-                                        "crossSeriesReducer": "REDUCE_SUM"
-                                    }
-                                },
-                                "denominator": {
-                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
-                                    "aggregation": {
-                                        "alignmentPeriod": "86400s",
-                                        "perSeriesAligner": "ALIGN_SUM",
-                                        "crossSeriesReducer": "REDUCE_SUM"
-                                    }
-                                }
-                            }
-                        },
-                        "sparkChartView": {
-                            "sparkChartType": "SPARK_BAR"
-                        },
-                        "thresholds": [
-                            {
-                                "value": 0.01,
-                                "color": "YELLOW",
-                                "direction": "ABOVE",
-                                "label": ">1% Errors"
-                            },
-                            {
-                                "value": 0.05,
-                                "color": "RED",
-                                "direction": "ABOVE",
-                                "label": ">5% Breach"
-                            }
-                        ]
-                    }
-                }
-            },
-            {
-                "xPos": 0,
-                "yPos": 21,
+                "yPos": 20,
                 "width": 48,
                 "height": 4,
                 "widget": {
-                    "title": "\ud83d\udcc8 Token Consumption & Regional Trends",
                     "sectionHeader": {
-                        "subtitle": "Daily and hourly breakdowns by model, billing token type, and GCP serving location",
+                        "subtitle": "Daily and hourly breakdowns of token consumption by model and type",
                         "dividerBelow": true
-                    }
+                    },
+                    "title": "\ud83d\udcc8 Token Consumption Trends"
                 }
             },
             {
-                "xPos": 0,
-                "yPos": 25,
+                "yPos": 24,
                 "width": 24,
                 "height": 16,
                 "widget": {
@@ -320,7 +217,7 @@
             },
             {
                 "xPos": 24,
-                "yPos": 25,
+                "yPos": 24,
                 "width": 24,
                 "height": 16,
                 "widget": {
@@ -352,9 +249,8 @@
                 }
             },
             {
-                "xPos": 0,
-                "yPos": 41,
-                "width": 24,
+                "yPos": 40,
+                "width": 48,
                 "height": 16,
                 "widget": {
                     "title": "Hourly token usage by model",
@@ -375,39 +271,6 @@
                                             "crossSeriesReducer": "REDUCE_SUM",
                                             "groupByFields": [
                                                 "resource.label.\"model_user_id\""
-                                            ]
-                                        }
-                                    }
-                                }
-                            }
-                        ]
-                    }
-                }
-            },
-            {
-                "xPos": 24,
-                "yPos": 41,
-                "width": 24,
-                "height": 16,
-                "widget": {
-                    "title": "Hourly requests by serving region (location)",
-                    "xyChart": {
-                        "chartOptions": {
-                            "mode": "COLOR"
-                        },
-                        "dataSets": [
-                            {
-                                "plotType": "STACKED_BAR",
-                                "minAlignmentPeriod": "3600s",
-                                "timeSeriesQuery": {
-                                    "timeSeriesFilter": {
-                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
-                                        "aggregation": {
-                                            "alignmentPeriod": "3600s",
-                                            "perSeriesAligner": "ALIGN_SUM",
-                                            "crossSeriesReducer": "REDUCE_SUM",
-                                            "groupByFields": [
-                                                "resource.label.\"location\""
                                             ]
                                         }
                                     }

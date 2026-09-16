@@ -1,0 +1,235 @@
+{
+    "displayName": "Anthropic Models - Prompt Caching & Cost Efficiency",
+    "labels": {
+        "publisher": "anthropic",
+        "platform": "vertex-ai",
+        "suite": "geap-model-monitoring",
+        "version": "v2-0-old",
+        "dashboard-id": "05-anthropic-caching-efficiency"
+    },
+    "dashboardFilters": [
+        {
+            "labelKey": "resource.label.\"model_user_id\"",
+            "templateVariable": "model_id",
+            "filterType": "RESOURCE_LABEL"
+        }
+    ],
+    "mosaicLayout": {
+        "columns": 48,
+        "tiles": [
+            {
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "title": "",
+                    "text": {
+                        "content": "## \ud83d\udcb0 Prompt Caching & Cost Efficiency\nAnalyze how effectively prompt caching reduces input token costs. **Cache-read tokens** are up to 90% cheaper \u2014 maximize the green to minimize spend.",
+                        "format": "MARKDOWN",
+                        "style": {
+                            "backgroundColor": "#0A2E1A",
+                            "textColor": "#E0E0E0",
+                            "fontSize": "FS_MEDIUM",
+                            "padding": "P_MEDIUM",
+                            "horizontalAlignment": "H_LEFT",
+                            "verticalAlignment": "V_CENTER"
+                        }
+                    }
+                }
+            },
+            {
+                "yPos": 4,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Daily cache-read, cache-write, and uncached input token volumes",
+                        "dividerBelow": true
+                    },
+                    "title": "\ud83d\udcca Cache Token Breakdown"
+                }
+            },
+            {
+                "yPos": 8,
+                "width": 48,
+                "height": 18,
+                "widget": {
+                    "title": "Cache token breakdown per day (read vs write vs uncached input)",
+                    "xyChart": {
+                        "chartOptions": {
+                            "mode": "COLOR"
+                        },
+                        "dataSets": [
+                            {
+                                "plotType": "STACKED_BAR",
+                                "minAlignmentPeriod": "86400s",
+                                "timeSeriesQuery": {
+                                    "timeSeriesFilter": {
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" metric.label.\"type\"!=\"output\"",
+                                        "aggregation": {
+                                            "alignmentPeriod": "86400s",
+                                            "perSeriesAligner": "ALIGN_SUM",
+                                            "crossSeriesReducer": "REDUCE_SUM",
+                                            "groupByFields": [
+                                                "metric.label.\"type\""
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "yPos": 26,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "24-hour comparison of cheap (cached) vs full-price (uncached) input tokens",
+                        "dividerBelow": true
+                    },
+                    "title": "\ud83d\udd11 Cost Scorecards"
+                }
+            },
+            {
+                "yPos": 30,
+                "width": 24,
+                "height": 14,
+                "widget": {
+                    "title": "\ud83d\udc9a Cache read tokens (24h) \u2014 cheap",
+                    "scorecard": {
+                        "timeSeriesQuery": {
+                            "timeSeriesFilter": {
+                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" metric.label.\"type\"=\"cache_read_input\"",
+                                "aggregation": {
+                                    "alignmentPeriod": "86400s",
+                                    "perSeriesAligner": "ALIGN_SUM",
+                                    "crossSeriesReducer": "REDUCE_SUM"
+                                }
+                            }
+                        },
+                        "sparkChartView": {
+                            "sparkChartType": "SPARK_LINE"
+                        }
+                    }
+                }
+            },
+            {
+                "xPos": 24,
+                "yPos": 30,
+                "width": 24,
+                "height": 14,
+                "widget": {
+                    "title": "\ud83d\udd34 Uncached input tokens (24h) \u2014 full price",
+                    "scorecard": {
+                        "timeSeriesQuery": {
+                            "timeSeriesFilter": {
+                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" metric.label.\"type\"=\"input\"",
+                                "aggregation": {
+                                    "alignmentPeriod": "86400s",
+                                    "perSeriesAligner": "ALIGN_SUM",
+                                    "crossSeriesReducer": "REDUCE_SUM"
+                                }
+                            }
+                        },
+                        "sparkChartView": {
+                            "sparkChartType": "SPARK_LINE"
+                        },
+                        "thresholds": [
+                            {
+                                "value": 10000000,
+                                "color": "YELLOW",
+                                "direction": "ABOVE",
+                                "label": "High uncached"
+                            },
+                            {
+                                "value": 50000000,
+                                "color": "RED",
+                                "direction": "ABOVE",
+                                "label": "Very high"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "yPos": 44,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Hourly trends for cache efficiency and explicit caching adoption",
+                        "dividerBelow": true
+                    },
+                    "title": "\ud83d\udcc8 Caching Trends"
+                }
+            },
+            {
+                "yPos": 48,
+                "width": 24,
+                "height": 16,
+                "widget": {
+                    "title": "Cache hit ratio proxy (cache_read vs input, hourly)",
+                    "xyChart": {
+                        "chartOptions": {
+                            "mode": "COLOR"
+                        },
+                        "dataSets": [
+                            {
+                                "plotType": "STACKED_AREA",
+                                "minAlignmentPeriod": "3600s",
+                                "timeSeriesQuery": {
+                                    "timeSeriesFilter": {
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" metric.label.\"type\"=monitoring.regex.full_match(\"input|cache_read_input\")",
+                                        "aggregation": {
+                                            "alignmentPeriod": "3600s",
+                                            "perSeriesAligner": "ALIGN_SUM",
+                                            "crossSeriesReducer": "REDUCE_SUM",
+                                            "groupByFields": [
+                                                "metric.label.\"type\""
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "xPos": 24,
+                "yPos": 48,
+                "width": 24,
+                "height": 16,
+                "widget": {
+                    "title": "Requests using explicit caching vs not (hourly)",
+                    "xyChart": {
+                        "chartOptions": {
+                            "mode": "COLOR"
+                        },
+                        "dataSets": [
+                            {
+                                "plotType": "STACKED_BAR",
+                                "minAlignmentPeriod": "3600s",
+                                "timeSeriesQuery": {
+                                    "timeSeriesFilter": {
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
+                                        "aggregation": {
+                                            "alignmentPeriod": "3600s",
+                                            "perSeriesAligner": "ALIGN_SUM",
+                                            "crossSeriesReducer": "REDUCE_SUM",
+                                            "groupByFields": [
+                                                "metric.label.\"explicit_caching\""
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    }
+}

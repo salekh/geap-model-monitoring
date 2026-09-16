@@ -1,0 +1,274 @@
+{
+    "displayName": "Anthropic Models - Errors & Reliability",
+    "labels": {
+        "publisher": "anthropic",
+        "platform": "vertex-ai",
+        "suite": "geap-model-monitoring",
+        "version": "v2-0-old",
+        "dashboard-id": "04-anthropic-errors-reliability"
+    },
+    "dashboardFilters": [
+        {
+            "labelKey": "resource.label.\"model_user_id\"",
+            "templateVariable": "model_id",
+            "filterType": "RESOURCE_LABEL"
+        }
+    ],
+    "mosaicLayout": {
+        "columns": 48,
+        "tiles": [
+            {
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "title": "",
+                    "text": {
+                        "content": "## \ud83d\udee1\ufe0f Errors & Reliability\nTrack request success/failure rates, error categories, and throttling events. Scorecards highlight 24h totals with color-coded thresholds for rapid triage.",
+                        "format": "MARKDOWN",
+                        "style": {
+                            "backgroundColor": "#2A0A0A",
+                            "textColor": "#E0E0E0",
+                            "fontSize": "FS_MEDIUM",
+                            "padding": "P_MEDIUM",
+                            "horizontalAlignment": "H_LEFT",
+                            "verticalAlignment": "V_CENTER"
+                        }
+                    }
+                }
+            },
+            {
+                "yPos": 4,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Response codes and error category breakdown",
+                        "dividerBelow": true
+                    },
+                    "title": "\ud83d\udcca Error Breakdown"
+                }
+            },
+            {
+                "yPos": 8,
+                "width": 24,
+                "height": 18,
+                "widget": {
+                    "title": "Requests by response code (all Anthropic models)",
+                    "xyChart": {
+                        "chartOptions": {
+                            "mode": "COLOR"
+                        },
+                        "dataSets": [
+                            {
+                                "plotType": "STACKED_BAR",
+                                "minAlignmentPeriod": "3600s",
+                                "timeSeriesQuery": {
+                                    "timeSeriesFilter": {
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
+                                        "aggregation": {
+                                            "alignmentPeriod": "3600s",
+                                            "perSeriesAligner": "ALIGN_SUM",
+                                            "crossSeriesReducer": "REDUCE_SUM",
+                                            "groupByFields": [
+                                                "metric.label.\"response_code\""
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "xPos": 24,
+                "yPos": 8,
+                "width": 24,
+                "height": 18,
+                "widget": {
+                    "title": "Errors by category (non-2xx)",
+                    "xyChart": {
+                        "chartOptions": {
+                            "mode": "COLOR"
+                        },
+                        "dataSets": [
+                            {
+                                "plotType": "STACKED_BAR",
+                                "minAlignmentPeriod": "3600s",
+                                "timeSeriesQuery": {
+                                    "timeSeriesFilter": {
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" metric.label.\"response_code\"!=\"200\"",
+                                        "aggregation": {
+                                            "alignmentPeriod": "3600s",
+                                            "perSeriesAligner": "ALIGN_SUM",
+                                            "crossSeriesReducer": "REDUCE_SUM",
+                                            "groupByFields": [
+                                                "metric.label.\"error_category\"",
+                                                "metric.label.\"response_code\""
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "yPos": 26,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Rolling 24-hour success, failure, and throttle counts",
+                        "dividerBelow": true
+                    },
+                    "title": "\ud83d\udd11 24h Reliability Scorecards"
+                }
+            },
+            {
+                "yPos": 30,
+                "width": 16,
+                "height": 14,
+                "widget": {
+                    "title": "\u2705 Successful requests (24h)",
+                    "scorecard": {
+                        "timeSeriesQuery": {
+                            "timeSeriesFilter": {
+                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" metric.label.\"response_code\"=\"200\"",
+                                "aggregation": {
+                                    "alignmentPeriod": "86400s",
+                                    "perSeriesAligner": "ALIGN_SUM",
+                                    "crossSeriesReducer": "REDUCE_SUM"
+                                }
+                            }
+                        },
+                        "sparkChartView": {
+                            "sparkChartType": "SPARK_LINE"
+                        }
+                    }
+                }
+            },
+            {
+                "xPos": 16,
+                "yPos": 30,
+                "width": 16,
+                "height": 14,
+                "widget": {
+                    "title": "\u274c Failed requests (24h)",
+                    "scorecard": {
+                        "timeSeriesQuery": {
+                            "timeSeriesFilter": {
+                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" metric.label.\"response_code\"!=\"200\"",
+                                "aggregation": {
+                                    "alignmentPeriod": "86400s",
+                                    "perSeriesAligner": "ALIGN_SUM",
+                                    "crossSeriesReducer": "REDUCE_SUM"
+                                }
+                            }
+                        },
+                        "sparkChartView": {
+                            "sparkChartType": "SPARK_BAR"
+                        },
+                        "thresholds": [
+                            {
+                                "value": 10,
+                                "color": "YELLOW",
+                                "direction": "ABOVE",
+                                "label": "Failures present"
+                            },
+                            {
+                                "value": 100,
+                                "color": "RED",
+                                "direction": "ABOVE",
+                                "label": "High failure count"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "xPos": 32,
+                "yPos": 30,
+                "width": 16,
+                "height": 14,
+                "widget": {
+                    "title": "\ud83d\udeab Throttled / 429 errors (24h)",
+                    "scorecard": {
+                        "timeSeriesQuery": {
+                            "timeSeriesFilter": {
+                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" metric.label.\"response_code\"=\"429\"",
+                                "aggregation": {
+                                    "alignmentPeriod": "86400s",
+                                    "perSeriesAligner": "ALIGN_SUM",
+                                    "crossSeriesReducer": "REDUCE_SUM"
+                                }
+                            }
+                        },
+                        "sparkChartView": {
+                            "sparkChartType": "SPARK_BAR"
+                        },
+                        "thresholds": [
+                            {
+                                "value": 1,
+                                "color": "YELLOW",
+                                "direction": "ABOVE",
+                                "label": "Throttling detected"
+                            },
+                            {
+                                "value": 50,
+                                "color": "RED",
+                                "direction": "ABOVE",
+                                "label": "Heavy throttling"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "yPos": 44,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Hourly error rate trend broken down by model",
+                        "dividerBelow": true
+                    },
+                    "title": "\ud83d\udcc8 Error Rate Trend"
+                }
+            },
+            {
+                "yPos": 48,
+                "width": 48,
+                "height": 16,
+                "widget": {
+                    "title": "Error rate by model (non-200 requests/hour)",
+                    "xyChart": {
+                        "chartOptions": {
+                            "mode": "COLOR"
+                        },
+                        "dataSets": [
+                            {
+                                "plotType": "LINE",
+                                "minAlignmentPeriod": "3600s",
+                                "timeSeriesQuery": {
+                                    "timeSeriesFilter": {
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" metric.label.\"response_code\"!=\"200\"",
+                                        "aggregation": {
+                                            "alignmentPeriod": "3600s",
+                                            "perSeriesAligner": "ALIGN_SUM",
+                                            "crossSeriesReducer": "REDUCE_SUM",
+                                            "groupByFields": [
+                                                "resource.label.\"model_user_id\""
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    }
+}

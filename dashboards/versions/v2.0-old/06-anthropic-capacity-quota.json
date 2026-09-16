@@ -4,48 +4,26 @@
         "publisher": "anthropic",
         "platform": "vertex-ai",
         "suite": "geap-model-monitoring",
-        "version": "v3-1-iter1",
-        "dashboard-id": "06-capacity-quota"
+        "version": "v2-0-old",
+        "dashboard-id": "06-anthropic-capacity-quota"
     },
     "dashboardFilters": [
         {
             "labelKey": "resource.label.\"model_user_id\"",
             "templateVariable": "model_id",
             "filterType": "RESOURCE_LABEL"
-        },
-        {
-            "labelKey": "resource.label.\"location\"",
-            "templateVariable": "location",
-            "filterType": "RESOURCE_LABEL"
-        },
-        {
-            "labelKey": "resource.label.\"model_version_id\"",
-            "templateVariable": "model_version",
-            "filterType": "RESOURCE_LABEL"
-        },
-        {
-            "labelKey": "metric.label.\"method\"",
-            "templateVariable": "api_method",
-            "filterType": "METRIC_LABEL"
-        },
-        {
-            "labelKey": "metric.label.\"request_type\"",
-            "templateVariable": "request_type",
-            "filterType": "METRIC_LABEL"
         }
     ],
     "mosaicLayout": {
         "columns": 48,
         "tiles": [
             {
-                "xPos": 0,
-                "yPos": 0,
                 "width": 48,
-                "height": 5,
+                "height": 4,
                 "widget": {
                     "title": "",
                     "text": {
-                        "content": "## \ud83c\udfd7\ufe0f Capacity, Quota & Request Shape  `[v3.1-iter1]`\nProvisioned Throughput (PTU) vs Pay-as-you-go routing, prompt/output size histograms, and API method patterns.\n\n**Suite Navigation:** 00 Usage Summary | 01 Fable 5 Deep-Dive | 02 Fleet Overview | 03 Latency & SLOs | 04 Errors & Reliability | 05 Caching & FinOps | **[06 Capacity & Quota]**  \n*Interactive Filters active above: filter dynamically by Model, Region (`location`), Version (`model_version_id`), and API Method (`method`).*",
+                        "content": "## \ud83c\udfd7\ufe0f Capacity, Quota & Request Shape\nUnderstand your capacity posture \u2014 shared vs provisioned routing, request size distributions, throughput consumption, and API method usage patterns.",
                         "format": "MARKDOWN",
                         "style": {
                             "backgroundColor": "#1A2E0A",
@@ -59,150 +37,19 @@
                 }
             },
             {
-                "xPos": 0,
-                "yPos": 5,
+                "yPos": 4,
                 "width": 48,
                 "height": 4,
                 "widget": {
-                    "title": "\ud83d\udd11 24h Capacity & Routing Scorecards",
                     "sectionHeader": {
-                        "subtitle": "Provisioned vs shared request routing ratios and total consumed throughput",
+                        "subtitle": "Shared vs provisioned/dedicated request routing and input token size buckets",
                         "dividerBelow": true
-                    }
+                    },
+                    "title": "\ud83d\udcca Request Routing & Input Size"
                 }
             },
             {
-                "xPos": 0,
-                "yPos": 9,
-                "width": 12,
-                "height": 12,
-                "widget": {
-                    "title": "Total Requests (24h)",
-                    "scorecard": {
-                        "timeSeriesQuery": {
-                            "timeSeriesFilter": {
-                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
-                                "aggregation": {
-                                    "alignmentPeriod": "86400s",
-                                    "perSeriesAligner": "ALIGN_SUM",
-                                    "crossSeriesReducer": "REDUCE_SUM"
-                                }
-                            }
-                        },
-                        "sparkChartView": {
-                            "sparkChartType": "SPARK_LINE"
-                        }
-                    }
-                }
-            },
-            {
-                "xPos": 12,
-                "yPos": 9,
-                "width": 12,
-                "height": 12,
-                "widget": {
-                    "title": "Consumed Token Throughput (24h)",
-                    "scorecard": {
-                        "timeSeriesQuery": {
-                            "timeSeriesFilter": {
-                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/consumed_token_throughput\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
-                                "aggregation": {
-                                    "alignmentPeriod": "86400s",
-                                    "perSeriesAligner": "ALIGN_SUM",
-                                    "crossSeriesReducer": "REDUCE_SUM"
-                                }
-                            }
-                        },
-                        "sparkChartView": {
-                            "sparkChartType": "SPARK_LINE"
-                        }
-                    }
-                }
-            },
-            {
-                "xPos": 24,
-                "yPos": 9,
-                "width": 12,
-                "height": 12,
-                "widget": {
-                    "title": "Streaming Method Ratio (24h)",
-                    "scorecard": {
-                        "timeSeriesQuery": {
-                            "timeSeriesFilterRatio": {
-                                "numerator": {
-                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" metric.label.\"method\"=\"streamRawPredict\"",
-                                    "aggregation": {
-                                        "alignmentPeriod": "86400s",
-                                        "perSeriesAligner": "ALIGN_SUM",
-                                        "crossSeriesReducer": "REDUCE_SUM"
-                                    }
-                                },
-                                "denominator": {
-                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
-                                    "aggregation": {
-                                        "alignmentPeriod": "86400s",
-                                        "perSeriesAligner": "ALIGN_SUM",
-                                        "crossSeriesReducer": "REDUCE_SUM"
-                                    }
-                                }
-                            }
-                        },
-                        "sparkChartView": {
-                            "sparkChartType": "SPARK_LINE"
-                        }
-                    }
-                }
-            },
-            {
-                "xPos": 36,
-                "yPos": 9,
-                "width": 12,
-                "height": 12,
-                "widget": {
-                    "title": "Avg Output Tokens / Req (24h)",
-                    "scorecard": {
-                        "timeSeriesQuery": {
-                            "timeSeriesFilterRatio": {
-                                "numerator": {
-                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" metric.label.\"type\"=\"output\"",
-                                    "aggregation": {
-                                        "alignmentPeriod": "86400s",
-                                        "perSeriesAligner": "ALIGN_SUM",
-                                        "crossSeriesReducer": "REDUCE_SUM"
-                                    }
-                                },
-                                "denominator": {
-                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
-                                    "aggregation": {
-                                        "alignmentPeriod": "86400s",
-                                        "perSeriesAligner": "ALIGN_SUM",
-                                        "crossSeriesReducer": "REDUCE_SUM"
-                                    }
-                                }
-                            }
-                        },
-                        "sparkChartView": {
-                            "sparkChartType": "SPARK_LINE"
-                        }
-                    }
-                }
-            },
-            {
-                "xPos": 0,
-                "yPos": 21,
-                "width": 48,
-                "height": 4,
-                "widget": {
-                    "title": "\ud83d\udcca Request Routing & Context Window Size Histograms",
-                    "sectionHeader": {
-                        "subtitle": "Identify context-bloat (100k+ token buckets) and verify shared vs provisioned routing",
-                        "dividerBelow": true
-                    }
-                }
-            },
-            {
-                "xPos": 0,
-                "yPos": 25,
+                "yPos": 8,
                 "width": 24,
                 "height": 18,
                 "widget": {
@@ -236,7 +83,7 @@
             },
             {
                 "xPos": 24,
-                "yPos": 25,
+                "yPos": 8,
                 "width": 24,
                 "height": 18,
                 "widget": {
@@ -268,22 +115,20 @@
                 }
             },
             {
-                "xPos": 0,
-                "yPos": 43,
+                "yPos": 26,
                 "width": 48,
                 "height": 4,
                 "widget": {
-                    "title": "\ud83d\udce4 Output Size Distribution, Throughput & API Methods",
                     "sectionHeader": {
-                        "subtitle": "Output length buckets, hourly token throughput per model, and streaming vs batch API split",
+                        "subtitle": "Output token size distribution and consumed throughput per model",
                         "dividerBelow": true
-                    }
+                    },
+                    "title": "\ud83d\udce4 Output Size & Throughput"
                 }
             },
             {
-                "xPos": 0,
-                "yPos": 47,
-                "width": 16,
+                "yPos": 30,
+                "width": 24,
                 "height": 16,
                 "widget": {
                     "title": "Requests by output token size bucket",
@@ -314,9 +159,9 @@
                 }
             },
             {
-                "xPos": 16,
-                "yPos": 47,
-                "width": 16,
+                "xPos": 24,
+                "yPos": 30,
+                "width": 24,
                 "height": 16,
                 "widget": {
                     "title": "Consumed token throughput by model (hourly)",
@@ -347,9 +192,20 @@
                 }
             },
             {
-                "xPos": 32,
-                "yPos": 47,
-                "width": 16,
+                "yPos": 46,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Breakdown by API method \u2014 rawPredict vs streamRawPredict",
+                        "dividerBelow": true
+                    },
+                    "title": "\ud83d\udd0c API Method Usage"
+                }
+            },
+            {
+                "yPos": 50,
+                "width": 48,
                 "height": 16,
                 "widget": {
                     "title": "Requests by API method (rawPredict / streamRawPredict)",

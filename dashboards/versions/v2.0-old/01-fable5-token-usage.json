@@ -1,0 +1,220 @@
+{
+    "displayName": "Claude Fable 5 - Daily Token Usage",
+    "labels": {
+        "publisher": "anthropic",
+        "platform": "vertex-ai",
+        "suite": "geap-model-monitoring",
+        "version": "v2-0-old",
+        "dashboard-id": "01-fable5-token-usage"
+    },
+    "dashboardFilters": [],
+    "mosaicLayout": {
+        "columns": 48,
+        "tiles": [
+            {
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "title": "",
+                    "text": {
+                        "content": "## \ud83e\udd8a Claude Fable 5 \u2014 Token Usage\nDedicated view for **Claude Fable 5** model usage. Tracks token consumption by type, daily totals, and hourly rate trends.",
+                        "format": "MARKDOWN",
+                        "style": {
+                            "backgroundColor": "#1B1B3A",
+                            "textColor": "#E0E0E0",
+                            "fontSize": "FS_MEDIUM",
+                            "padding": "P_MEDIUM",
+                            "horizontalAlignment": "H_LEFT",
+                            "verticalAlignment": "V_CENTER"
+                        }
+                    }
+                }
+            },
+            {
+                "yPos": 4,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Stacked daily breakdown of input, output, and cached tokens",
+                        "dividerBelow": true
+                    },
+                    "title": "\ud83d\udcca Daily Token Breakdown"
+                }
+            },
+            {
+                "yPos": 8,
+                "width": 48,
+                "height": 18,
+                "widget": {
+                    "title": "Tokens per day by type (input / output / cache)",
+                    "xyChart": {
+                        "chartOptions": {
+                            "mode": "COLOR"
+                        },
+                        "dataSets": [
+                            {
+                                "plotType": "STACKED_BAR",
+                                "minAlignmentPeriod": "86400s",
+                                "timeSeriesQuery": {
+                                    "timeSeriesFilter": {
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=\"claude-fable-5\"",
+                                        "aggregation": {
+                                            "alignmentPeriod": "86400s",
+                                            "perSeriesAligner": "ALIGN_SUM",
+                                            "crossSeriesReducer": "REDUCE_SUM",
+                                            "groupByFields": [
+                                                "metric.label.\"type\""
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "yPos": 26,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Rolling 24-hour token summaries",
+                        "dividerBelow": true
+                    },
+                    "title": "\ud83d\udd11 24h Scorecards"
+                }
+            },
+            {
+                "yPos": 30,
+                "width": 16,
+                "height": 14,
+                "widget": {
+                    "title": "Total tokens (last 24h)",
+                    "scorecard": {
+                        "timeSeriesQuery": {
+                            "timeSeriesFilter": {
+                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=\"claude-fable-5\"",
+                                "aggregation": {
+                                    "alignmentPeriod": "86400s",
+                                    "perSeriesAligner": "ALIGN_SUM",
+                                    "crossSeriesReducer": "REDUCE_SUM"
+                                }
+                            }
+                        },
+                        "sparkChartView": {
+                            "sparkChartType": "SPARK_LINE"
+                        },
+                        "thresholds": [
+                            {
+                                "value": 10000000,
+                                "color": "YELLOW",
+                                "direction": "ABOVE",
+                                "label": "High usage"
+                            },
+                            {
+                                "value": 50000000,
+                                "color": "RED",
+                                "direction": "ABOVE",
+                                "label": "Very high"
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "xPos": 16,
+                "yPos": 30,
+                "width": 16,
+                "height": 14,
+                "widget": {
+                    "title": "Output tokens (last 24h)",
+                    "scorecard": {
+                        "timeSeriesQuery": {
+                            "timeSeriesFilter": {
+                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=\"claude-fable-5\" metric.label.\"type\"=\"output\"",
+                                "aggregation": {
+                                    "alignmentPeriod": "86400s",
+                                    "perSeriesAligner": "ALIGN_SUM",
+                                    "crossSeriesReducer": "REDUCE_SUM"
+                                }
+                            }
+                        },
+                        "sparkChartView": {
+                            "sparkChartType": "SPARK_LINE"
+                        }
+                    }
+                }
+            },
+            {
+                "xPos": 32,
+                "yPos": 30,
+                "width": 16,
+                "height": 14,
+                "widget": {
+                    "title": "Input tokens (last 24h)",
+                    "scorecard": {
+                        "timeSeriesQuery": {
+                            "timeSeriesFilter": {
+                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=\"claude-fable-5\" metric.label.\"type\"=\"input\"",
+                                "aggregation": {
+                                    "alignmentPeriod": "86400s",
+                                    "perSeriesAligner": "ALIGN_SUM",
+                                    "crossSeriesReducer": "REDUCE_SUM"
+                                }
+                            }
+                        },
+                        "sparkChartView": {
+                            "sparkChartType": "SPARK_LINE"
+                        }
+                    }
+                }
+            },
+            {
+                "yPos": 44,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Hourly resolution view of token generation rates",
+                        "dividerBelow": true
+                    },
+                    "title": "\u23f1\ufe0f Hourly Rate Trends"
+                }
+            },
+            {
+                "yPos": 48,
+                "width": 48,
+                "height": 16,
+                "widget": {
+                    "title": "Token rate by type (1h resolution)",
+                    "xyChart": {
+                        "chartOptions": {
+                            "mode": "COLOR"
+                        },
+                        "dataSets": [
+                            {
+                                "plotType": "STACKED_AREA",
+                                "minAlignmentPeriod": "3600s",
+                                "timeSeriesQuery": {
+                                    "timeSeriesFilter": {
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=\"claude-fable-5\"",
+                                        "aggregation": {
+                                            "alignmentPeriod": "3600s",
+                                            "perSeriesAligner": "ALIGN_SUM",
+                                            "crossSeriesReducer": "REDUCE_SUM",
+                                            "groupByFields": [
+                                                "metric.label.\"type\""
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    }
+}

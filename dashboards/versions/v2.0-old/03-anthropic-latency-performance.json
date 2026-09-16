@@ -4,43 +4,26 @@
         "publisher": "anthropic",
         "platform": "vertex-ai",
         "suite": "geap-model-monitoring",
-        "version": "v3-1-iter1",
-        "dashboard-id": "03-latency-performance"
+        "version": "v2-0-old",
+        "dashboard-id": "03-anthropic-latency-performance"
     },
     "dashboardFilters": [
         {
             "labelKey": "resource.label.\"model_user_id\"",
             "templateVariable": "model_id",
             "filterType": "RESOURCE_LABEL"
-        },
-        {
-            "labelKey": "resource.label.\"location\"",
-            "templateVariable": "location",
-            "filterType": "RESOURCE_LABEL"
-        },
-        {
-            "labelKey": "resource.label.\"model_version_id\"",
-            "templateVariable": "model_version",
-            "filterType": "RESOURCE_LABEL"
-        },
-        {
-            "labelKey": "metric.label.\"method\"",
-            "templateVariable": "api_method",
-            "filterType": "METRIC_LABEL"
         }
     ],
     "mosaicLayout": {
         "columns": 48,
         "tiles": [
             {
-                "xPos": 0,
-                "yPos": 0,
                 "width": 48,
-                "height": 5,
+                "height": 4,
                 "widget": {
                     "title": "",
                     "text": {
-                        "content": "## \u26a1 Latency & Performance SLO Monitor  `[v3.1-iter1]`\nTrack **Time-to-First-Token (TTFT)** and **End-to-End Request Latency** across percentiles (p50, p95, p99) with SLO threshold scorecards.\n\n**Suite Navigation:** 00 Usage Summary | 01 Fable 5 Deep-Dive | 02 Fleet Overview | **[03 Latency & SLOs]** | 04 Errors & Reliability | 05 Caching & FinOps | 06 Capacity & Quota  \n*Interactive Filters active above: filter dynamically by Model, Region (`location`), Version (`model_version_id`), and API Method (`method`).*",
+                        "content": "## \u26a1 Latency & Performance\nMonitor **time-to-first-token** and **end-to-end request latency** at p50, p95, and p99. The heatmap at the bottom reveals the full distribution shape.",
                         "format": "MARKDOWN",
                         "style": {
                             "backgroundColor": "#1A0A2E",
@@ -54,188 +37,21 @@
                 }
             },
             {
-                "xPos": 0,
-                "yPos": 5,
+                "yPos": 4,
                 "width": 48,
                 "height": 4,
                 "widget": {
-                    "title": "\ud83d\udd11 24h Latency Percentile Scorecards (TTFT & E2E)",
                     "sectionHeader": {
-                        "subtitle": "Fleet-wide latency benchmarks with yellow warning and red SLO violation thresholds",
+                        "subtitle": "How quickly does the model start responding? (5-min aligned)",
                         "dividerBelow": true
-                    }
+                    },
+                    "title": "\ud83c\udfce\ufe0f Time to First Token"
                 }
             },
             {
-                "xPos": 0,
-                "yPos": 9,
-                "width": 12,
-                "height": 12,
-                "widget": {
-                    "title": "TTFT p50 (24h, ms)",
-                    "scorecard": {
-                        "timeSeriesQuery": {
-                            "timeSeriesFilter": {
-                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/first_token_latencies\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
-                                "aggregation": {
-                                    "alignmentPeriod": "86400s",
-                                    "perSeriesAligner": "ALIGN_DELTA",
-                                    "crossSeriesReducer": "REDUCE_PERCENTILE_50"
-                                }
-                            }
-                        },
-                        "sparkChartView": {
-                            "sparkChartType": "SPARK_LINE"
-                        },
-                        "thresholds": [
-                            {
-                                "value": 800,
-                                "color": "YELLOW",
-                                "direction": "ABOVE",
-                                "label": ">800ms"
-                            },
-                            {
-                                "value": 2000,
-                                "color": "RED",
-                                "direction": "ABOVE",
-                                "label": ">2s Slow"
-                            }
-                        ]
-                    }
-                }
-            },
-            {
-                "xPos": 12,
-                "yPos": 9,
-                "width": 12,
-                "height": 12,
-                "widget": {
-                    "title": "TTFT p95 (24h, ms)",
-                    "scorecard": {
-                        "timeSeriesQuery": {
-                            "timeSeriesFilter": {
-                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/first_token_latencies\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
-                                "aggregation": {
-                                    "alignmentPeriod": "86400s",
-                                    "perSeriesAligner": "ALIGN_DELTA",
-                                    "crossSeriesReducer": "REDUCE_PERCENTILE_95"
-                                }
-                            }
-                        },
-                        "sparkChartView": {
-                            "sparkChartType": "SPARK_LINE"
-                        },
-                        "thresholds": [
-                            {
-                                "value": 2000,
-                                "color": "YELLOW",
-                                "direction": "ABOVE",
-                                "label": ">2s"
-                            },
-                            {
-                                "value": 5000,
-                                "color": "RED",
-                                "direction": "ABOVE",
-                                "label": ">5s Breach"
-                            }
-                        ]
-                    }
-                }
-            },
-            {
-                "xPos": 24,
-                "yPos": 9,
-                "width": 12,
-                "height": 12,
-                "widget": {
-                    "title": "End-to-End Latency p50 (24h, ms)",
-                    "scorecard": {
-                        "timeSeriesQuery": {
-                            "timeSeriesFilter": {
-                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_latencies\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
-                                "aggregation": {
-                                    "alignmentPeriod": "86400s",
-                                    "perSeriesAligner": "ALIGN_DELTA",
-                                    "crossSeriesReducer": "REDUCE_PERCENTILE_50"
-                                }
-                            }
-                        },
-                        "sparkChartView": {
-                            "sparkChartType": "SPARK_LINE"
-                        },
-                        "thresholds": [
-                            {
-                                "value": 5000,
-                                "color": "YELLOW",
-                                "direction": "ABOVE",
-                                "label": ">5s"
-                            },
-                            {
-                                "value": 15000,
-                                "color": "RED",
-                                "direction": "ABOVE",
-                                "label": ">15s"
-                            }
-                        ]
-                    }
-                }
-            },
-            {
-                "xPos": 36,
-                "yPos": 9,
-                "width": 12,
-                "height": 12,
-                "widget": {
-                    "title": "End-to-End Latency p99 (24h, ms)",
-                    "scorecard": {
-                        "timeSeriesQuery": {
-                            "timeSeriesFilter": {
-                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_latencies\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
-                                "aggregation": {
-                                    "alignmentPeriod": "86400s",
-                                    "perSeriesAligner": "ALIGN_DELTA",
-                                    "crossSeriesReducer": "REDUCE_PERCENTILE_99"
-                                }
-                            }
-                        },
-                        "sparkChartView": {
-                            "sparkChartType": "SPARK_LINE"
-                        },
-                        "thresholds": [
-                            {
-                                "value": 30000,
-                                "color": "YELLOW",
-                                "direction": "ABOVE",
-                                "label": ">30s"
-                            },
-                            {
-                                "value": 60000,
-                                "color": "RED",
-                                "direction": "ABOVE",
-                                "label": ">60s Tail"
-                            }
-                        ]
-                    }
-                }
-            },
-            {
-                "xPos": 0,
-                "yPos": 21,
-                "width": 48,
-                "height": 4,
-                "widget": {
-                    "title": "\ud83c\udfce\ufe0f Time to First Token (TTFT \u2014 Streaming Responsiveness)",
-                    "sectionHeader": {
-                        "subtitle": "How quickly the model emits the first token after invocation (5-min aligned)",
-                        "dividerBelow": true
-                    }
-                }
-            },
-            {
-                "xPos": 0,
-                "yPos": 25,
+                "yPos": 8,
                 "width": 24,
-                "height": 16,
+                "height": 18,
                 "widget": {
                     "title": "Time to first token \u2014 p50 (ms, by model)",
                     "xyChart": {
@@ -269,9 +85,9 @@
             },
             {
                 "xPos": 24,
-                "yPos": 25,
+                "yPos": 8,
                 "width": 24,
-                "height": 16,
+                "height": 18,
                 "widget": {
                     "title": "Time to first token \u2014 p95 (ms, by model)",
                     "xyChart": {
@@ -304,23 +120,21 @@
                 }
             },
             {
-                "xPos": 0,
-                "yPos": 41,
+                "yPos": 26,
                 "width": 48,
                 "height": 4,
                 "widget": {
-                    "title": "\ud83d\udd50 End-to-End Latency & Distribution Heatmap",
                     "sectionHeader": {
-                        "subtitle": "Complete generation time from request submission to final token completion",
+                        "subtitle": "Total round-trip time from request to complete response",
                         "dividerBelow": true
-                    }
+                    },
+                    "title": "\ud83d\udd50 End-to-End Latency"
                 }
             },
             {
-                "xPos": 0,
-                "yPos": 45,
+                "yPos": 30,
                 "width": 24,
-                "height": 16,
+                "height": 18,
                 "widget": {
                     "title": "End-to-end request latency \u2014 p50 (ms, by model)",
                     "xyChart": {
@@ -354,9 +168,9 @@
             },
             {
                 "xPos": 24,
-                "yPos": 45,
+                "yPos": 30,
                 "width": 24,
-                "height": 16,
+                "height": 18,
                 "widget": {
                     "title": "End-to-end request latency \u2014 p99 (ms, by model)",
                     "xyChart": {
@@ -389,8 +203,19 @@
                 }
             },
             {
-                "xPos": 0,
-                "yPos": 61,
+                "yPos": 48,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Full latency distribution \u2014 spot outliers and multi-modal patterns",
+                        "dividerBelow": true
+                    },
+                    "title": "\ud83c\udf21\ufe0f Latency Heatmap"
+                }
+            },
+            {
+                "yPos": 52,
                 "width": 48,
                 "height": 16,
                 "widget": {

@@ -4,43 +4,26 @@
         "publisher": "anthropic",
         "platform": "vertex-ai",
         "suite": "geap-model-monitoring",
-        "version": "v3-1-iter1",
-        "dashboard-id": "02-fleet-overview"
+        "version": "v2-0-old",
+        "dashboard-id": "02-anthropic-fleet-overview"
     },
     "dashboardFilters": [
         {
             "labelKey": "resource.label.\"model_user_id\"",
             "templateVariable": "model_id",
             "filterType": "RESOURCE_LABEL"
-        },
-        {
-            "labelKey": "resource.label.\"location\"",
-            "templateVariable": "location",
-            "filterType": "RESOURCE_LABEL"
-        },
-        {
-            "labelKey": "resource.label.\"model_version_id\"",
-            "templateVariable": "model_version",
-            "filterType": "RESOURCE_LABEL"
-        },
-        {
-            "labelKey": "metric.label.\"method\"",
-            "templateVariable": "api_method",
-            "filterType": "METRIC_LABEL"
         }
     ],
     "mosaicLayout": {
         "columns": 48,
         "tiles": [
             {
-                "xPos": 0,
-                "yPos": 0,
                 "width": 48,
-                "height": 5,
+                "height": 4,
                 "widget": {
                     "title": "",
                     "text": {
-                        "content": "## \ud83d\ude80 Anthropic Fleet Overview  `[v3.1-iter1]`\nHolistic multi-model comparison across all Claude deployments \u2014 adoption trends, regional distribution, streaming ratio, and throughput.\n\n**Suite Navigation:** 00 Usage Summary | 01 Fable 5 Deep-Dive | **[02 Fleet Overview]** | 03 Latency & SLOs | 04 Errors & Reliability | 05 Caching & FinOps | 06 Capacity & Quota  \n*Interactive Filters active above: filter dynamically by Model, Region (`location`), Version (`model_version_id`), and API Method (`method`).*",
+                        "content": "## \ud83d\ude80 Anthropic Fleet Overview\nComprehensive view of all Anthropic models \u2014 token usage, request volumes, throughput, and input/output mix. Use the **model filter** to isolate a single model.",
                         "format": "MARKDOWN",
                         "style": {
                             "backgroundColor": "#0D1B2A",
@@ -54,150 +37,19 @@
                 }
             },
             {
-                "xPos": 0,
-                "yPos": 5,
+                "yPos": 4,
                 "width": 48,
                 "height": 4,
                 "widget": {
-                    "title": "\ud83d\udd11 Fleet Adoption & Utilization Scorecards (24h)",
                     "sectionHeader": {
-                        "subtitle": "Fleet-wide request volume, streaming adoption ratio, and average payload density",
+                        "subtitle": "Daily aggregations broken down by model",
                         "dividerBelow": true
-                    }
+                    },
+                    "title": "\ud83d\udcca Daily Volume by Model"
                 }
             },
             {
-                "xPos": 0,
-                "yPos": 9,
-                "width": 12,
-                "height": 12,
-                "widget": {
-                    "title": "Fleet Total Tokens (24h)",
-                    "scorecard": {
-                        "timeSeriesQuery": {
-                            "timeSeriesFilter": {
-                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
-                                "aggregation": {
-                                    "alignmentPeriod": "86400s",
-                                    "perSeriesAligner": "ALIGN_SUM",
-                                    "crossSeriesReducer": "REDUCE_SUM"
-                                }
-                            }
-                        },
-                        "sparkChartView": {
-                            "sparkChartType": "SPARK_LINE"
-                        }
-                    }
-                }
-            },
-            {
-                "xPos": 12,
-                "yPos": 9,
-                "width": 12,
-                "height": 12,
-                "widget": {
-                    "title": "Fleet Total Requests (24h)",
-                    "scorecard": {
-                        "timeSeriesQuery": {
-                            "timeSeriesFilter": {
-                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
-                                "aggregation": {
-                                    "alignmentPeriod": "86400s",
-                                    "perSeriesAligner": "ALIGN_SUM",
-                                    "crossSeriesReducer": "REDUCE_SUM"
-                                }
-                            }
-                        },
-                        "sparkChartView": {
-                            "sparkChartType": "SPARK_LINE"
-                        }
-                    }
-                }
-            },
-            {
-                "xPos": 24,
-                "yPos": 9,
-                "width": 12,
-                "height": 12,
-                "widget": {
-                    "title": "Streaming Adoption Ratio (24h)",
-                    "scorecard": {
-                        "timeSeriesQuery": {
-                            "timeSeriesFilterRatio": {
-                                "numerator": {
-                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" metric.label.\"method\"=\"streamRawPredict\"",
-                                    "aggregation": {
-                                        "alignmentPeriod": "86400s",
-                                        "perSeriesAligner": "ALIGN_SUM",
-                                        "crossSeriesReducer": "REDUCE_SUM"
-                                    }
-                                },
-                                "denominator": {
-                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
-                                    "aggregation": {
-                                        "alignmentPeriod": "86400s",
-                                        "perSeriesAligner": "ALIGN_SUM",
-                                        "crossSeriesReducer": "REDUCE_SUM"
-                                    }
-                                }
-                            }
-                        },
-                        "sparkChartView": {
-                            "sparkChartType": "SPARK_LINE"
-                        }
-                    }
-                }
-            },
-            {
-                "xPos": 36,
-                "yPos": 9,
-                "width": 12,
-                "height": 12,
-                "widget": {
-                    "title": "Fleet Avg Tokens / Req (24h)",
-                    "scorecard": {
-                        "timeSeriesQuery": {
-                            "timeSeriesFilterRatio": {
-                                "numerator": {
-                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
-                                    "aggregation": {
-                                        "alignmentPeriod": "86400s",
-                                        "perSeriesAligner": "ALIGN_SUM",
-                                        "crossSeriesReducer": "REDUCE_SUM"
-                                    }
-                                },
-                                "denominator": {
-                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\"",
-                                    "aggregation": {
-                                        "alignmentPeriod": "86400s",
-                                        "perSeriesAligner": "ALIGN_SUM",
-                                        "crossSeriesReducer": "REDUCE_SUM"
-                                    }
-                                }
-                            }
-                        },
-                        "sparkChartView": {
-                            "sparkChartType": "SPARK_LINE"
-                        }
-                    }
-                }
-            },
-            {
-                "xPos": 0,
-                "yPos": 21,
-                "width": 48,
-                "height": 4,
-                "widget": {
-                    "title": "\ud83d\udcca Daily Volume & Model Adoption",
-                    "sectionHeader": {
-                        "subtitle": "Compare token and request volume across all active Anthropic models",
-                        "dividerBelow": true
-                    }
-                }
-            },
-            {
-                "xPos": 0,
-                "yPos": 25,
+                "yPos": 8,
                 "width": 24,
                 "height": 18,
                 "widget": {
@@ -230,7 +82,7 @@
             },
             {
                 "xPos": 24,
-                "yPos": 25,
+                "yPos": 8,
                 "width": 24,
                 "height": 18,
                 "widget": {
@@ -262,22 +114,20 @@
                 }
             },
             {
-                "xPos": 0,
-                "yPos": 43,
+                "yPos": 26,
                 "width": 48,
                 "height": 4,
                 "widget": {
-                    "title": "\u23f1\ufe0f Hourly Trends, Token Mix & Throughput",
                     "sectionHeader": {
-                        "subtitle": "Hourly token generation rates, input/output composition, and Provisioned Throughput consumption",
+                        "subtitle": "Hourly resolution trends and input/output composition",
                         "dividerBelow": true
-                    }
+                    },
+                    "title": "\u23f1\ufe0f Hourly Trends & Token Mix"
                 }
             },
             {
-                "xPos": 0,
-                "yPos": 47,
-                "width": 16,
+                "yPos": 30,
+                "width": 24,
                 "height": 16,
                 "widget": {
                     "title": "Hourly token rate by model",
@@ -308,12 +158,12 @@
                 }
             },
             {
-                "xPos": 16,
-                "yPos": 47,
-                "width": 16,
+                "xPos": 24,
+                "yPos": 30,
+                "width": 24,
                 "height": 16,
                 "widget": {
-                    "title": "Input vs output token mix (daily)",
+                    "title": "Input vs output token mix (all models, daily)",
                     "xyChart": {
                         "chartOptions": {
                             "mode": "COLOR"
@@ -341,12 +191,23 @@
                 }
             },
             {
-                "xPos": 32,
-                "yPos": 47,
-                "width": 16,
+                "yPos": 46,
+                "width": 48,
+                "height": 4,
+                "widget": {
+                    "sectionHeader": {
+                        "subtitle": "Aggregated throughput consumption across the fleet",
+                        "dividerBelow": true
+                    },
+                    "title": "\ud83d\udd0b Throughput Consumption"
+                }
+            },
+            {
+                "yPos": 50,
+                "width": 48,
                 "height": 16,
                 "widget": {
-                    "title": "Throughput consumption by model",
+                    "title": "Throughput consumption by model (tokens/s equivalents)",
                     "xyChart": {
                         "chartOptions": {
                             "mode": "COLOR"
