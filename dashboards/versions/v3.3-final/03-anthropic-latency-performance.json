@@ -249,14 +249,10 @@
                         "thresholds": [
                             {
                                 "value": 1000,
-                                "color": "YELLOW",
-                                "direction": "ABOVE",
                                 "label": "TTFT Target (1s)"
                             },
                             {
                                 "value": 3000,
-                                "color": "RED",
-                                "direction": "ABOVE",
                                 "label": "TTFT SLO Ceiling (3s)"
                             }
                         ],
@@ -337,14 +333,10 @@
                         "thresholds": [
                             {
                                 "value": 10000,
-                                "color": "YELLOW",
-                                "direction": "ABOVE",
                                 "label": "Interactive Target (10s)"
                             },
                             {
                                 "value": 30000,
-                                "color": "RED",
-                                "direction": "ABOVE",
                                 "label": "Batch Ceiling (30s)"
                             }
                         ],

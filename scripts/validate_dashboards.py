@@ -46,6 +46,13 @@ def check_tile_overlaps(tiles: List[Dict], filename: str) -> List[str]:
             f"[x={ox}..{ox+ow}, y={oy}..{oy+oh}]"
         )
     occupied.append((x, y, w, h, title))
+    # Check xyChart thresholds schema
+    if "xyChart" in widget and "thresholds" in widget["xyChart"]:
+      for th in widget["xyChart"]["thresholds"]:
+        if "color" in th or "direction" in th:
+          errors.append(
+              f"{filename}: Tile #{idx} ({title}) has invalid 'color' or 'direction' inside xyChart.thresholds (only allowed in scorecard.thresholds)"
+          )
   return errors
 
 

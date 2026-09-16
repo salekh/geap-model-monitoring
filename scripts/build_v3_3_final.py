@@ -997,8 +997,8 @@ d03 = {
                         "chartOptions": {"mode": "COLOR"},
                         "yAxis": {"label": "TTFT (ms)", "scale": "LINEAR"},
                         "thresholds": [
-                            {"value": 1000, "color": "YELLOW", "direction": "ABOVE", "label": "TTFT Target (1s)"},
-                            {"value": 3000, "color": "RED", "direction": "ABOVE", "label": "TTFT SLO Ceiling (3s)"},
+                            {"value": 1000, "label": "TTFT Target (1s)"},
+                            {"value": 3000, "label": "TTFT SLO Ceiling (3s)"},
                         ],
                         "dataSets": [
                             {
@@ -1064,8 +1064,8 @@ d03 = {
                         "chartOptions": {"mode": "COLOR"},
                         "yAxis": {"label": "E2E Latency (ms)", "scale": "LINEAR"},
                         "thresholds": [
-                            {"value": 10000, "color": "YELLOW", "direction": "ABOVE", "label": "Interactive Target (10s)"},
-                            {"value": 30000, "color": "RED", "direction": "ABOVE", "label": "Batch Ceiling (30s)"},
+                            {"value": 10000, "label": "Interactive Target (10s)"},
+                            {"value": 30000, "label": "Batch Ceiling (30s)"},
                         ],
                         "dataSets": [
                             {
