@@ -388,8 +388,8 @@ d00 = {
 }
 
 # 01 - Claude Fable 5
-F_FABLE_TOK = F_TOKEN + ' resource.label."model_user_id"="claude-fable-5"'
-F_FABLE_INV = F_INVOC + ' resource.label."model_user_id"="claude-fable-5"'
+F_FABLE_TOK = F_TOKEN + ' resource.label."model_user_id"=monitoring.regex.full_match("claude-(fable|opus)-5.*")'
+F_FABLE_INV = F_INVOC + ' resource.label."model_user_id"=monitoring.regex.full_match("claude-(fable|opus)-5.*")'
 d01 = {
     "displayName": "Claude Fable 5 - Daily Token Usage",
     "labels": make_labels("01-fable5-token-usage"),

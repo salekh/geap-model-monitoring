@@ -1,24 +1,21 @@
 # Anthropic Model Monitoring on GCP (Vertex AI + Cloud Observability)
 
-![Model Usage Dashboard — v3.3-final executive view showing 64.8M tokens, normalized ratios, Donut shares, Dual-Axis Volume vs Error correlation, and Live Tabular Leaderboard](images/model-usage-scorecards.png)
+![Model Usage Dashboard — Cloud Monitoring scorecards, daily token consumption by model and type, and invocation breakdown](images/model-usage-scorecards.png)
 
 Repeatable, version-controllable, and **recursively self-improved** Google Cloud Monitoring dashboards for Anthropic Claude models served through **Vertex AI Model Garden**, deployed with a single idempotent script.
 
 ```
 geap-model-monitoring/
 ├── deploy.sh                        # idempotent multi-version & side-by-side deployment script
-├── dashboard-studio.html            # standalone interactive HTML5 version explorer & incident simulator
 ├── README.md                        # documentation & FinOps/SRE playbooks
 ├── scripts/
 │   ├── validate_dashboards.py       # 48-column mosaic overlap & schema validator
-│   ├── generate_screenshots.py      # 2x Retina Cloud Monitoring UI screenshot renderer
 │   ├── build_v3_1_iter1.py          # Recursive Self-Improvement Iteration 1 builder
 │   ├── build_v3_2_iter2.py          # Recursive Self-Improvement Iteration 2 builder
 │   └── build_v3_3_final.py          # Recursive Self-Improvement Iteration 3 builder
-├── images/                          # latest v3.3-final dashboard screenshots
+├── images/                          # Google Cloud Monitoring dashboard screenshots
 │   ├── model-usage-scorecards.png
 │   ├── fleet-overview-daily-volume.png
-│   ├── latency-performance-slos.png
 │   ├── caching-cost-efficiency.png
 │   └── versions/
 │       └── v2.0-old/                # preserved historical v2.0 screenshots
@@ -139,15 +136,13 @@ Compare all active Anthropic models (`claude-fable-5`, `claude-opus-4`, `claude-
 - **Multi-Model Trends & PTU Utilization**: Daily stacked token/request bars and Provisioned Throughput consumption.
 - **Fleet Leaderboard Matrix (`timeSeriesTable`)**: Token and invocation leaderboards grouped by Model, Region, and API Method.
 
-![Fleet Overview — v3.3-final showing Token Share vs Request Share Donut comparison, Multi-Model trends, and Leaderboard Matrix](images/fleet-overview-daily-volume.png)
+![Fleet Overview — Cloud Monitoring daily token and invocation volume across Anthropic models](images/fleet-overview-daily-volume.png)
 
 ### 03 — Latency & Performance SLO Monitor
 - **4 Latency Percentile Scorecards (24h)**: **TTFT p50**, **TTFT p95**, **End-to-End Latency p50**, and **End-to-End Latency p99** with color-coded warning and SLO breach thresholds.
 - **Unified Multi-Percentile Spread Curves**: Overlays **p50, p95, and p99** on a single chart with horizontal **SLO Target Reference Lines** (`1,000 ms` for TTFT, `10,000 ms` for interactive E2E) to expose tail amplification.
 - **Dual Distribution Heatmaps**: Side-by-side **TTFT Distribution Heatmap (`first_token_latencies`)** (revealing cached fast-path vs cold-start bimodal clusters) and **End-to-End Latency Heatmap (`model_invocation_latencies`)**.
 - **Latency Leaderboard Table & SRE Guide**: Sortable p95 TTFT and p95 E2E latency by model and region.
-
-![Latency & Performance — v3.3-final showing SLO scorecards, unified multi-percentile curves with horizontal SLO lines, and Latency Leaderboard](images/latency-performance-slos.png)
 
 ### 04 — Errors, Throttling & Reliability Triage
 - **5 Reliability Scorecards & Ratios**: Successful 200 OK count, Failed non-200 count, **True Error Rate Ratio %**, Throttled 429 count, and **429 Throttle Ratio %**.
@@ -161,7 +156,7 @@ Compare all active Anthropic models (`claude-fable-5`, `claude-opus-4`, `claude-
 - **Dual-Axis Cache Read Savings (`Y1 Area`) vs Cache Write Overhead (`Y2 Line`)**: Ensures cache reads stay well above writes.
 - **FinOps Break-Even Formula Card & Leaderboard Table**: Mathematical break-even thresholds (`>1.28` reads/write for 5m TTL, `>2.11` reads/write for 1h TTL) and silent cache invalidation diagnostics.
 
-![Caching & Cost Efficiency — v3.3-final showing True Cache Hit Ratio, Cost Structure Donuts, Dual-Axis Read vs Write chart, and FinOps Break-Even Formula](images/caching-cost-efficiency.png)
+![Caching & Cost Efficiency — Cloud Monitoring dashboard showing cache read vs uncached input token volume and efficiency](images/caching-cost-efficiency.png)
 
 ### 06 — Capacity, Quota & Request Shape
 - **4 Capacity Scorecards**: Total Requests, Consumed Token Throughput, Streaming Method Ratio %, and Avg Output Tokens / Request.
@@ -170,9 +165,32 @@ Compare all active Anthropic models (`claude-fable-5`, `claude-opus-4`, `claude-
 
 ---
 
-## Interactive Web Dashboard Studio (`dashboard-studio.html`)
+## Live GCP Deployments & Verified 30-Day Telemetry (`argolis-project` / `sa-learning-1`)
 
-Open `dashboard-studio.html` in any browser to launch the standalone **Cloud Monitoring Dashboard Studio & Version Explorer**:
-- Switch live between **all 5 preserved versions** (`v1.0-original`, `v2.0-old`, `v3.1-iter1`, `v3.2-iter2`, `v3.3-final`).
-- Toggle **Side-by-Side Diff Mode (`⇄ Compare Old v2.0 vs New v3.3`)** to audit every architectural improvement.
-- Test interactive filters (`model_id`, `location`) and simulate production incidents (**Regional 429 Quota Spike**, **Silent Cache Invalidation Regression**, **Fable 5 Deep Reasoning Tail Latency**).
+Both `v3.3-final` (7 dashboards) and preserved `[v2.0 Old]` (7 dashboards) are deployed side-by-side in:
+- **`argolis-project` (`sa-learning-1`)**: `https://console.cloud.google.com/monitoring/dashboards?project=sa-learning-1`
+- **`nexus-project` (`sa-nexus-gcp-4-sandbox-183936`)**: `https://console.cloud.google.com/monitoring/dashboards?project=sa-nexus-gcp-4-sandbox-183936`
+
+### Direct Links (`sa-learning-1` — Last 30 Days `P30D`)
+
+| Dashboard (`v3.3-final`) | Preserved `[v2.0 Old]` Counterpart |
+|---|---|
+| [Anthropic - Model Usage](https://console.cloud.google.com/monitoring/dashboards/builder/494f39e1-954a-4dd5-8451-fd3908ad5c09?project=sa-learning-1&duration=P30D) | [[v2.0 Old] Anthropic - Model Usage](https://console.cloud.google.com/monitoring/dashboards/builder/d105114d-9bad-4995-81e0-3119eeea5e13?project=sa-learning-1&duration=P30D) |
+| [Claude Fable 5 - Daily Token Usage](https://console.cloud.google.com/monitoring/dashboards/builder/64a5328f-902f-4ee5-a9ee-a18ffef20cdd?project=sa-learning-1&duration=P30D) | [[v2.0 Old] Claude Fable 5 - Daily Token Usage](https://console.cloud.google.com/monitoring/dashboards/builder/82ab9e73-ae0e-4ef6-bb0c-8ecf20e6cb60?project=sa-learning-1&duration=P30D) |
+| [Anthropic Models - Fleet Overview (All Models)](https://console.cloud.google.com/monitoring/dashboards/builder/6d36a847-54e0-4d18-b6e1-698ae75410ad?project=sa-learning-1&duration=P30D) | [[v2.0 Old] Anthropic Models - Fleet Overview (All Models)](https://console.cloud.google.com/monitoring/dashboards/builder/abdd1b99-c407-4994-a1ee-f238403829d0?project=sa-learning-1&duration=P30D) |
+| [Anthropic Models - Latency & Performance](https://console.cloud.google.com/monitoring/dashboards/builder/d3df09ad-ad8e-4995-b37a-607c70abe68d?project=sa-learning-1&duration=P30D) | [[v2.0 Old] Anthropic Models - Latency & Performance](https://console.cloud.google.com/monitoring/dashboards/builder/4c432e57-a408-45fa-884c-fc44088103ad?project=sa-learning-1&duration=P30D) |
+| [Anthropic Models - Errors & Reliability](https://console.cloud.google.com/monitoring/dashboards/builder/a2a32f88-77ac-433a-a6de-c265503d13c1?project=sa-learning-1&duration=P30D) | [[v2.0 Old] Anthropic Models - Errors & Reliability](https://console.cloud.google.com/monitoring/dashboards/builder/6da26801-7092-44b1-a8ae-d4f685974958?project=sa-learning-1&duration=P30D) |
+| [Anthropic Models - Prompt Caching & Cost Efficiency](https://console.cloud.google.com/monitoring/dashboards/builder/2947cbef-4e26-4df1-93ad-fee37ea9c18e?project=sa-learning-1&duration=P30D) | [[v2.0 Old] Anthropic Models - Prompt Caching & Cost Efficiency](https://console.cloud.google.com/monitoring/dashboards/builder/d6d457e6-f1a6-42e3-b624-f8176bc229de?project=sa-learning-1&duration=P30D) |
+| [Anthropic Models - Capacity, Quota & Request Shape](https://console.cloud.google.com/monitoring/dashboards/builder/5fd86181-f1f5-4335-859e-11e613f7b158?project=sa-learning-1&duration=P30D) | [[v2.0 Old] Anthropic Models - Capacity, Quota & Request Shape](https://console.cloud.google.com/monitoring/dashboards/builder/fde8d3b7-625b-45e2-b3ee-7c701c5b124b?project=sa-learning-1&duration=P30D) |
+
+### Verified 30-Day Anthropic Telemetry Summary (`sa-learning-1`)
+
+| `model_user_id` | `location` | Token `type` | 30-Day Token Count | Key FinOps / SRE Metric |
+|---|---|---|---:|---|
+| **`claude-opus-5`** | `global` | `cache_read_input` | **39,115,765** | **94.9% Cache Hit Ratio** (`cache_read / (cache_read + input)`) |
+| **`claude-opus-5`** | `global` | `input` (uncached) | **2,113,023** | **24.6× Cache Read-to-Write Ratio** (well above `1.28×` 5m & `2.11×` 1h break-even) |
+| **`claude-opus-5`** | `global` | `cache_write_input` (5m TTL) | **1,588,561** | Standard 5-minute TTL prompt cache population |
+| **`claude-opus-5`** | `global` | `cache_write_1h_input` (1h TTL) | **473,734** | Extended 1-hour TTL prompt cache population |
+| **`claude-opus-5`** | `global` | `output` | **548,924** | Total generated completion & reasoning tokens |
+| **`claude-sonnet-5`** | `global` | `input` / `output` | **1,163** / **49** | Lightweight evaluation invocations |
+| **`count-tokens`** | `global` | `input` | **378,296** | Pre-flight token counting API requests (`2023-06-01`) |
