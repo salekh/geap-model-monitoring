@@ -1,26 +1,24 @@
 # Anthropic Model Monitoring on GCP (Vertex AI + Cloud Observability)
 
-![Anthropic Model Observability & FinOps Executive Infographic](images/twg-exec-hero-infographic.png)
-
-## Executive Statement
-
 Zero-instrumentation **FinOps, SRE, and Capacity control plane** for Anthropic models (**`Claude Opus x`**, **`Claude Fable x`**, **`Claude Sonnet x`**, **`Claude Haiku x`**) on [Vertex AI Model Garden](https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude), built on native [`PublisherModel` telemetry](https://cloud.google.com/vertex-ai/docs/general/monitoring-metrics) and deployed via a single idempotent command (`./deploy.sh`).
+
+### Live Cloud Monitoring Dashboards Preview
+
+![Executive Scorecards & Model Usage (00-anthropic-model-usage.json)](images/model-usage-scorecards.png)
+
+| Fleet Overview & Daily Volume (`02`) | Prompt Caching & Cost Efficiency (`05`) |
+|---|---|
+| ![Fleet Overview](images/fleet-overview-daily-volume.png) | ![Prompt Caching & FinOps](images/caching-cost-efficiency.png) |
+
+---
+
+## Executive Statement: What Problem Is Being Solved?
 
 | Operational Blind Spot | Risk if Unmonitored | How This Suite Solves It | Dashboard & Reference Docs |
 |---|---|---|---|
 | **Silent Prompt Cache Invalidation (FinOps)** | Dynamic prompt prefixes trigger `1.25×` (5m) or `2.00×` (1h) cache write penalties with zero reads — **doubling input spend** instead of saving 90%. | Real-time **Cache Hit Ratio %** and **Read-to-Write Break-Even** scorecards (`>1.28×` for 5m TTL, `>2.11×` for 1h TTL). | [05 — Caching](dashboards/05-anthropic-caching-efficiency.json) · [FinOps Math](docs/ARCHITECTURE_AND_PLAYBOOK.md#2-prompt-caching-finops-break-even-math) · [GCP Caching Docs](https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/claude-prompt-caching) |
 | **Reasoning Tail Latency vs. Cold Starts (SRE)** | Extended thinking chains (`Claude Opus x` / `Claude Fable x`) take `15s–45s` `E2E` while `TTFT` stays `<1s`, causing false-positive latency paging. | Decouples **TTFT (`p50`/`p95`)** prefill latency from **E2E (`p50`/`p95`/`p99`)** generation tails via bimodal heatmaps & SLO lines. | [03 — Latency](dashboards/03-anthropic-latency-performance.json) · [SRE Playbook](docs/ARCHITECTURE_AND_PLAYBOOK.md#3-sre-latency--error-triage-rules) · [Streaming Docs](https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude#stream) |
 | **Regional `HTTP 429` & PTU Skew (Capacity)** | Multi-region traffic spikes exhaust burst quotas (`429`) or under-utilize [Provisioned Throughput (`PTU`)](https://cloud.google.com/vertex-ai/generative-ai/docs/provisioned-throughput/overview). | Dual-Axis **Demand vs. `429` Throttling** overlays, regional Donut shares, and prompt size bucket histograms. | [04 — Errors](dashboards/04-anthropic-errors-reliability.json) · [06 — Capacity](dashboards/06-anthropic-capacity-quota.json) · [PTU Docs](https://cloud.google.com/vertex-ai/generative-ai/docs/provisioned-throughput/overview) |
-
----
-
-## Architecture & Triage Flow
-
-![Anthropic Model Observability Architecture on Vertex AI](images/twg-telemetry-architecture.png)
-
-![FinOps and SRE Automated Triage Decision Workflow](images/twg-finops-sre-decision-flow.png)
-
-> **Deep-Dive Documentation:** See **[Architecture, Metric Schema & FinOps/SRE Playbook (`docs/ARCHITECTURE_AND_PLAYBOOK.md`)](docs/ARCHITECTURE_AND_PLAYBOOK.md)** for full MQL formulas, pricing multipliers, and version lineage (`v1.0.0` → `v3.0.0`).
 
 ---
 
@@ -56,6 +54,16 @@ gcloud config set project YOUR_PROJECT_ID
 
 ---
 
+## Architecture & Triage Flow
+
+![Anthropic Model Observability Architecture on Vertex AI](images/twg-telemetry-architecture.png)
+
+![FinOps and SRE Automated Triage Decision Workflow](images/twg-finops-sre-decision-flow.png)
+
+> **Deep-Dive Documentation:** See **[Architecture, Metric Schema & FinOps/SRE Playbook (`docs/ARCHITECTURE_AND_PLAYBOOK.md`)](docs/ARCHITECTURE_AND_PLAYBOOK.md)** for full MQL formulas, pricing multipliers, and version lineage (`v1.0.0` → `v3.0.0`).
+
+---
+
 ## Sample 30-Day Production Telemetry Benchmark
 
 | Model Family (`model_user_id`) | `location` | Token `type` | 30-Day Volume | FinOps / SRE Benchmark |
@@ -66,10 +74,4 @@ gcloud config set project YOUR_PROJECT_ID
 | **`claude-opus-x` / `claude-fable-x`** | `global` | `output` | **548,924** | Reasoning + completion tokens |
 | **`claude-sonnet-x`** / **`count-tokens`** | `global` | `input` / `output` | **379,508** | Lightweight eval & token-counting API calls |
 
----
-
-## Cloud Monitoring Screenshots
-
-| Executive Scorecards & Usage (`00`) | Fleet Overview (`02`) | Prompt Caching & FinOps (`05`) |
-|---|---|---|
-| ![Model Usage](images/model-usage-scorecards.png) | ![Fleet Overview](images/fleet-overview-daily-volume.png) | ![Caching Efficiency](images/caching-cost-efficiency.png) |
+![Anthropic Model Observability & FinOps Executive Infographic](images/twg-exec-hero-infographic.png)
