@@ -76,7 +76,7 @@
                     "scorecard": {
                         "timeSeriesQuery": {
                             "timeSeriesFilter": {
-                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-5.*\")",
+                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-.*\")",
                                 "aggregation": {
                                     "alignmentPeriod": "86400s",
                                     "perSeriesAligner": "ALIGN_SUM",
@@ -114,7 +114,7 @@
                     "scorecard": {
                         "timeSeriesQuery": {
                             "timeSeriesFilter": {
-                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-5.*\") metric.label.\"type\"=\"output\"",
+                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-.*\") metric.label.\"type\"=\"output\"",
                                 "aggregation": {
                                     "alignmentPeriod": "86400s",
                                     "perSeriesAligner": "ALIGN_SUM",
@@ -138,7 +138,7 @@
                     "scorecard": {
                         "timeSeriesQuery": {
                             "timeSeriesFilter": {
-                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-5.*\") metric.label.\"type\"=\"input\"",
+                                "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-.*\") metric.label.\"type\"=\"input\"",
                                 "aggregation": {
                                     "alignmentPeriod": "86400s",
                                     "perSeriesAligner": "ALIGN_SUM",
@@ -163,7 +163,7 @@
                         "timeSeriesQuery": {
                             "timeSeriesFilterRatio": {
                                 "numerator": {
-                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-5.*\") metric.label.\"type\"=\"cache_read_input\"",
+                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-.*\") metric.label.\"type\"=\"cache_read_input\"",
                                     "aggregation": {
                                         "alignmentPeriod": "86400s",
                                         "perSeriesAligner": "ALIGN_SUM",
@@ -171,7 +171,7 @@
                                     }
                                 },
                                 "denominator": {
-                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-5.*\") metric.label.\"type\"=monitoring.regex.full_match(\"input|cache_read_input|cache_write_input|cache_write_1h_input\")",
+                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-.*\") metric.label.\"type\"=monitoring.regex.full_match(\"input|cache_read_input|cache_write_input|cache_write_1h_input\")",
                                     "aggregation": {
                                         "alignmentPeriod": "86400s",
                                         "perSeriesAligner": "ALIGN_SUM",
@@ -205,7 +205,7 @@
                         "timeSeriesQuery": {
                             "timeSeriesFilterRatio": {
                                 "numerator": {
-                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-5.*\")",
+                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-.*\")",
                                     "aggregation": {
                                         "alignmentPeriod": "86400s",
                                         "perSeriesAligner": "ALIGN_SUM",
@@ -213,7 +213,7 @@
                                     }
                                 },
                                 "denominator": {
-                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-5.*\")",
+                                    "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-.*\")",
                                     "aggregation": {
                                         "alignmentPeriod": "86400s",
                                         "perSeriesAligner": "ALIGN_SUM",
@@ -255,7 +255,7 @@
                             {
                                 "timeSeriesQuery": {
                                     "timeSeriesFilter": {
-                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-5.*\")",
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-.*\")",
                                         "aggregation": {
                                             "alignmentPeriod": "86400s",
                                             "perSeriesAligner": "ALIGN_SUM",
@@ -285,7 +285,7 @@
                             {
                                 "timeSeriesQuery": {
                                     "timeSeriesFilter": {
-                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-5.*\")",
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-.*\")",
                                         "aggregation": {
                                             "alignmentPeriod": "86400s",
                                             "perSeriesAligner": "ALIGN_SUM",
@@ -315,7 +315,7 @@
                             {
                                 "timeSeriesQuery": {
                                     "timeSeriesFilter": {
-                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-5.*\")",
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-.*\")",
                                         "aggregation": {
                                             "alignmentPeriod": "86400s",
                                             "perSeriesAligner": "ALIGN_SUM",
@@ -361,7 +361,7 @@
                                 "minAlignmentPeriod": "86400s",
                                 "timeSeriesQuery": {
                                     "timeSeriesFilter": {
-                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-5.*\")",
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-.*\")",
                                         "aggregation": {
                                             "alignmentPeriod": "86400s",
                                             "perSeriesAligner": "ALIGN_SUM",
@@ -404,7 +404,7 @@
                                 "minAlignmentPeriod": "3600s",
                                 "timeSeriesQuery": {
                                     "timeSeriesFilter": {
-                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-5.*\")",
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/token_count\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-.*\")",
                                         "aggregation": {
                                             "alignmentPeriod": "3600s",
                                             "perSeriesAligner": "ALIGN_SUM",
@@ -423,7 +423,7 @@
                                 "minAlignmentPeriod": "3600s",
                                 "timeSeriesQuery": {
                                     "timeSeriesFilter": {
-                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_latencies\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-5.*\")",
+                                        "filter": "metric.type=\"aiplatform.googleapis.com/publisher/online_serving/model_invocation_latencies\" resource.type=\"aiplatform.googleapis.com/PublisherModel\" resource.label.\"publisher\"=\"anthropic\" resource.label.\"model_user_id\"=monitoring.regex.full_match(\"claude-(fable|opus)-.*\")",
                                         "aggregation": {
                                             "alignmentPeriod": "3600s",
                                             "perSeriesAligner": "ALIGN_DELTA",

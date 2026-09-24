@@ -1,19 +1,55 @@
 # Anthropic Model Monitoring on GCP (Vertex AI + Cloud Observability)
 
-![Model Usage Dashboard — Cloud Monitoring scorecards, daily token consumption by model and type, and invocation breakdown](images/model-usage-scorecards.png)
+![Anthropic Model Observability & FinOps Executive Infographic](images/twg-exec-hero-infographic.png)
 
-Repeatable, version-controllable, and **recursively self-improved** Google Cloud Monitoring dashboards for Anthropic Claude models served through **Vertex AI Model Garden**, deployed with a single idempotent script.
+## Executive Summary: What Problem Is Being Solved?
+
+Enterprise teams deploying Anthropic Claude models (**`Claude Opus x`**, **`Claude Fable x`**, **`Claude Sonnet x`**, **`Claude Haiku x`**) through **Google Cloud Vertex AI Model Garden** face three operational and financial blind spots out of the box:
+
+1. **Unattributed Token Spend & Silent Prompt Cache Regressions (FinOps)**:
+   Anthropic prompt caching reduces input token cost by **90%** (`0.10×` base input price for `cache_read_input`), but populating the cache carries a **`1.25×` (5-minute TTL)** or **`2.00×` (1-hour TTL)** write premium. If a dynamic timestamp, request UUID, or unsorted tool definition is injected near the top of a system prompt, cache writes occur on every turn with zero subsequent reads — **silently doubling (`2.00×`) input token spend instead of saving 90%**. Without real-time tracking of the **True Cache Hit Ratio** and **Cache Read-to-Write Break-Even Ratio** (`>1.28×` reads/write for 5m TTL; `>2.11×` reads/write for 1h TTL), FinOps teams only discover cache invalidation on their monthly invoice.
+2. **Reasoning Tail Latency vs. Upstream Cold-Start Degradation (SRE Performance)**:
+   Deep-reasoning models (**`Claude Opus x` / `Claude Fable x`**) generate extended chain-of-thought token sequences that naturally extend End-to-End (`E2E`) invocation duration to `15s–45s` on complex tasks while Time-to-First-Token (`TTFT`) remains sub-second (`<1,000 ms`). Traditional single-latency dashboards conflate expected reasoning generation time with upstream prefill bottlenecks or cold-start regressions, triggering false-positive paging alerts.
+3. **Regional Quota Exhaustion (`HTTP 429`) & Provisioned Throughput (`PTU`) Skew (Capacity Planning)**:
+   Multi-region deployments (`global`, `us-central1`, `europe-west1`) routing across shared Pay-as-You-Go (`PayGo`) endpoints and Provisioned Throughput (`PTU`) reservations suffer localized `HTTP 429` burst throttling and context-window bloat when traffic spikes or prompt size distributions shift intraday.
+
+### How This Suite Solves It
+
+**`geap-model-monitoring`** provides a **zero-instrumentation, version-controlled observability and FinOps control plane** built directly on Vertex AI's native `aiplatform.googleapis.com/PublisherModel` telemetry. With a single idempotent command (`./deploy.sh`), it deploys **7 specialized Google Cloud Monitoring dashboards** featuring:
+- **Normalized Server-Side Ratio Scorecards (`timeSeriesFilterRatio`)**: Real-time **Error Rate %**, **HTTP 429 Throttle %**, **True Cache Hit Ratio %**, **Cache Read-to-Write Break-Even Ratio**, and **Avg Tokens / Request**.
+- **Proportional Donut (`pieChart`) & Dual-Axis (`Y1`/`Y2`) Correlation Views**: Side-by-side Token Share vs. Request Share Donuts, plus Dual-Axis overlays correlating request demand directly against `HTTP 429` throttling, `p95` latency, and cache write overhead.
+- **Bimodal `TTFT` vs. `E2E` Latency Decomposition**: Unified multi-percentile (`p50`, `p95`, `p99`) curves with horizontal SLO target lines and dual distribution heatmaps (`first_token_latencies` vs. `model_invocation_latencies`).
+- **Live Tabular Leaderboards (`timeSeriesTable`) & Embedded Playbooks**: Sortable per-model, per-region leaderboards with inline progress bars (`metricVisualization: "BAR"`) paired with FinOps and SRE remediation playbooks.
+
+---
+
+## System Architecture & Automated Triage Workflow
+
+![Anthropic Model Observability Architecture on Vertex AI](images/twg-telemetry-architecture.png)
+
+### FinOps & SRE Signal Decomposition Flow
+
+![FinOps and SRE Automated Triage Decision Workflow](images/twg-finops-sre-decision-flow.png)
+
+---
+
+## Repository Structure
+
+![Model Usage Dashboard — Cloud Monitoring scorecards, daily token consumption by model and type, and invocation breakdown](images/model-usage-scorecards.png)
 
 ```
 geap-model-monitoring/
 ├── deploy.sh                        # idempotent multi-version & side-by-side deployment script
-├── README.md                        # documentation & FinOps/SRE playbooks
+├── README.md                        # executive architecture, FinOps math & SRE playbooks
 ├── scripts/
 │   ├── validate_dashboards.py       # 48-column mosaic overlap & schema validator
 │   ├── build_v3_1_iter1.py          # Recursive Self-Improvement Iteration 1 builder
 │   ├── build_v3_2_iter2.py          # Recursive Self-Improvement Iteration 2 builder
 │   └── build_v3_3_final.py          # Recursive Self-Improvement Iteration 3 builder
-├── images/                          # Google Cloud Monitoring dashboard screenshots
+├── images/                          # architecture diagrams, infographics & Cloud Monitoring screenshots
+│   ├── twg-exec-hero-infographic.png
+│   ├── twg-telemetry-architecture.png
+│   ├── twg-finops-sre-decision-flow.png
 │   ├── model-usage-scorecards.png
 │   ├── fleet-overview-daily-volume.png
 │   ├── caching-cost-efficiency.png
@@ -98,7 +134,7 @@ All dashboards are built on Vertex AI's **publisher model** metrics, emitted aut
 
 **Monitored resource:** `aiplatform.googleapis.com/PublisherModel` with labels:
 - `publisher` = `anthropic`
-- `model_user_id` = the model ID, e.g. **`claude-fable-5`**
+- `model_user_id` = the model ID, e.g. **`claude-opus-x`**, **`claude-fable-x`**, **`claude-sonnet-x`**, **`claude-haiku-x`**
 - `location` = region serving the request (`global`, `us-central1`, `europe-west1`, etc.)
 - `model_version_id` = specific model snapshot/version ID
 
@@ -107,7 +143,7 @@ All dashboards are built on Vertex AI's **publisher model** metrics, emitted aut
 | `type` | Meaning | Relative Pricing | FinOps Break-Even Rule |
 |---|---|---|---|
 | `input` | Uncached prompt tokens | `1.00×` (Full price) | Baseline |
-| `output` | Generated tokens | Output price (Highest) | Watch reasoning length on Fable 5 |
+| `output` | Generated tokens | Output price (Highest) | Watch reasoning length on `Claude Opus x` / `Claude Fable x` |
 | `cache_read_input` | Prompt tokens served from cache | `~0.10×` input price | **90% discount** |
 | `cache_write_input` | Tokens written to cache (5-min TTL) | `~1.25×` input price | Break-even at **>0.28 subsequent reads** (1.28 total hits) |
 | `cache_write_1h_input` | Tokens written to cache (1-hour TTL) | `~2.00×` input price | Break-even at **>1.11 subsequent reads** (2.11 total hits) |
@@ -122,16 +158,16 @@ All dashboards are built on Vertex AI's **publisher model** metrics, emitted aut
 - **Dual-Axis Correlation Chart**: Hourly Request Volume (`Y1 Stacked Bar`) overlaid with Non-200 Error Spikes (`Y2 Line`).
 - **Live Tabular Leaderboard (`timeSeriesTable`)**: Per-model & token type daily breakdown with inline visual progress bars (`metricVisualization: "BAR"`) + Executive Triage Playbook card.
 
-### 01 — Claude Fable 5: Daily Token Usage & Performance
-Dedicated deep-dive for **`claude-fable-5`**:
-- **Interactive Filters**: Filter Fable 5 dynamically by `location`, `model_version_id`, `api_method`, and `token_type`.
-- **5 Scorecards & Ratios**: Total Fable 5 tokens, Output tokens, Uncached input tokens, **Fable 5 Cache Hit Ratio %**, and **Avg Tokens / Request**.
+### 01 — Claude Fable x / Opus x: Daily Token Usage & Performance
+Dedicated deep-dive for **`claude-fable-x`** and **`claude-opus-x`** (`monitoring.regex.full_match("claude-(fable|opus)-.*")`):
+- **Interactive Filters**: Filter dynamically by `location`, `model_version_id`, `api_method`, and `token_type`.
+- **5 Scorecards & Ratios**: Total Fable/Opus tokens, Output tokens, Uncached input tokens, **Cache Hit Ratio %**, and **Avg Tokens / Request**.
 - **3 Donut Charts**: Billing Type Share, Serving Region Share, and Streaming vs Batch API Split.
-- **Dual-Axis Token vs Latency Correlation**: Hourly Fable 5 Token Generation (`Y1 Stacked Area`) overlaid with **End-to-End p95 Latency (`Y2 Line`)** to see how reasoning depth drives latency.
+- **Dual-Axis Token vs Latency Correlation**: Hourly Token Generation (`Y1 Stacked Area`) overlaid with **End-to-End p95 Latency (`Y2 Line`)** to see how reasoning depth drives latency.
 - **Regional Leaderboard Table**: Sortable token consumption across regions with inline bars.
 
 ### 02 — Anthropic Fleet Overview
-Compare all active Anthropic models (`claude-fable-5`, `claude-opus-4`, `claude-sonnet-4`) side-by-side:
+Compare all active Anthropic models (`claude-opus-x`, `claude-fable-x`, `claude-sonnet-x`, `claude-haiku-x`) side-by-side:
 - **Architectural Donut Comparison**: **Fleet Token Share by Model (Donut)** vs **Fleet Request Share by Model (Donut)** side-by-side — immediately highlights why a reasoning model with 31% of requests accounts for 58%+ of token volume.
 - **Multi-Model Trends & PTU Utilization**: Daily stacked token/request bars and Provisioned Throughput consumption.
 - **Fleet Leaderboard Matrix (`timeSeriesTable`)**: Token and invocation leaderboards grouped by Model, Region, and API Method.
@@ -176,7 +212,7 @@ Both `v3.3-final` (7 dashboards) and preserved `[v2.0 Old]` (7 dashboards) are d
 | Dashboard (`v3.3-final`) | Preserved `[v2.0 Old]` Counterpart |
 |---|---|
 | [Anthropic - Model Usage](https://console.cloud.google.com/monitoring/dashboards/builder/494f39e1-954a-4dd5-8451-fd3908ad5c09?project=sa-learning-1&duration=P30D) | [[v2.0 Old] Anthropic - Model Usage](https://console.cloud.google.com/monitoring/dashboards/builder/d105114d-9bad-4995-81e0-3119eeea5e13?project=sa-learning-1&duration=P30D) |
-| [Claude Fable 5 - Daily Token Usage](https://console.cloud.google.com/monitoring/dashboards/builder/64a5328f-902f-4ee5-a9ee-a18ffef20cdd?project=sa-learning-1&duration=P30D) | [[v2.0 Old] Claude Fable 5 - Daily Token Usage](https://console.cloud.google.com/monitoring/dashboards/builder/82ab9e73-ae0e-4ef6-bb0c-8ecf20e6cb60?project=sa-learning-1&duration=P30D) |
+| [Claude Fable x / Opus x - Daily Token Usage](https://console.cloud.google.com/monitoring/dashboards/builder/64a5328f-902f-4ee5-a9ee-a18ffef20cdd?project=sa-learning-1&duration=P30D) | [[v2.0 Old] Claude Fable x / Opus x - Daily Token Usage](https://console.cloud.google.com/monitoring/dashboards/builder/82ab9e73-ae0e-4ef6-bb0c-8ecf20e6cb60?project=sa-learning-1&duration=P30D) |
 | [Anthropic Models - Fleet Overview (All Models)](https://console.cloud.google.com/monitoring/dashboards/builder/6d36a847-54e0-4d18-b6e1-698ae75410ad?project=sa-learning-1&duration=P30D) | [[v2.0 Old] Anthropic Models - Fleet Overview (All Models)](https://console.cloud.google.com/monitoring/dashboards/builder/abdd1b99-c407-4994-a1ee-f238403829d0?project=sa-learning-1&duration=P30D) |
 | [Anthropic Models - Latency & Performance](https://console.cloud.google.com/monitoring/dashboards/builder/d3df09ad-ad8e-4995-b37a-607c70abe68d?project=sa-learning-1&duration=P30D) | [[v2.0 Old] Anthropic Models - Latency & Performance](https://console.cloud.google.com/monitoring/dashboards/builder/4c432e57-a408-45fa-884c-fc44088103ad?project=sa-learning-1&duration=P30D) |
 | [Anthropic Models - Errors & Reliability](https://console.cloud.google.com/monitoring/dashboards/builder/a2a32f88-77ac-433a-a6de-c265503d13c1?project=sa-learning-1&duration=P30D) | [[v2.0 Old] Anthropic Models - Errors & Reliability](https://console.cloud.google.com/monitoring/dashboards/builder/6da26801-7092-44b1-a8ae-d4f685974958?project=sa-learning-1&duration=P30D) |
@@ -185,12 +221,12 @@ Both `v3.3-final` (7 dashboards) and preserved `[v2.0 Old]` (7 dashboards) are d
 
 ### Verified 30-Day Anthropic Telemetry Summary (`sa-learning-1`)
 
-| `model_user_id` | `location` | Token `type` | 30-Day Token Count | Key FinOps / SRE Metric |
+| Model Family (`model_user_id`) | `location` | Token `type` | 30-Day Token Count | Key FinOps / SRE Metric |
 |---|---|---|---:|---|
-| **`claude-opus-5`** | `global` | `cache_read_input` | **39,115,765** | **94.9% Cache Hit Ratio** (`cache_read / (cache_read + input)`) |
-| **`claude-opus-5`** | `global` | `input` (uncached) | **2,113,023** | **24.6× Cache Read-to-Write Ratio** (well above `1.28×` 5m & `2.11×` 1h break-even) |
-| **`claude-opus-5`** | `global` | `cache_write_input` (5m TTL) | **1,588,561** | Standard 5-minute TTL prompt cache population |
-| **`claude-opus-5`** | `global` | `cache_write_1h_input` (1h TTL) | **473,734** | Extended 1-hour TTL prompt cache population |
-| **`claude-opus-5`** | `global` | `output` | **548,924** | Total generated completion & reasoning tokens |
-| **`claude-sonnet-5`** | `global` | `input` / `output` | **1,163** / **49** | Lightweight evaluation invocations |
-| **`count-tokens`** | `global` | `input` | **378,296** | Pre-flight token counting API requests (`2023-06-01`) |
+| **`claude-opus-x` / `claude-fable-x`** | `global` | `cache_read_input` | **39,115,765** | **94.9% Cache Hit Ratio** (`cache_read / (cache_read + input)`) |
+| **`claude-opus-x` / `claude-fable-x`** | `global` | `input` (uncached) | **2,113,023** | **24.6× Cache Read-to-Write Ratio** (well above `1.28×` 5m & `2.11×` 1h break-even) |
+| **`claude-opus-x` / `claude-fable-x`** | `global` | `cache_write_input` (5m TTL) | **1,588,561** | Standard 5-minute TTL prompt cache population |
+| **`claude-opus-x` / `claude-fable-x`** | `global` | `cache_write_1h_input` (1h TTL) | **473,734** | Extended 1-hour TTL prompt cache population |
+| **`claude-opus-x` / `claude-fable-x`** | `global` | `output` | **548,924** | Total generated completion & reasoning tokens |
+| **`claude-sonnet-x`** | `global` | `input` / `output` | **1,163** / **49** | Lightweight evaluation invocations |
+| **`count-tokens`** | `global` | `input` | **378,296** | Pre-flight token counting API requests |
