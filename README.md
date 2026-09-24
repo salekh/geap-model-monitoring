@@ -60,7 +60,7 @@ gcloud config set project YOUR_PROJECT_ID
 
 ![FinOps and SRE Automated Triage Decision Workflow](images/twg-finops-sre-decision-flow.png)
 
-> **Deep-Dive Documentation:** See **[Architecture, Metric Schema & FinOps/SRE Playbook (`docs/ARCHITECTURE_AND_PLAYBOOK.md`)](docs/ARCHITECTURE_AND_PLAYBOOK.md)** for full MQL formulas, pricing multipliers, and version lineage (`v1.0.0` → `v3.0.0`).
+> **Deep-Dive Documentation:** See **[Architecture, Metric Schema & FinOps/SRE Playbook (`docs/ARCHITECTURE_AND_PLAYBOOK.md`)](docs/ARCHITECTURE_AND_PLAYBOOK.md)** for native `timeSeriesFilterRatio` / [PromQL](https://cloud.google.com/monitoring/promql) query specifications (100% compliant with [Cloud Monitoring MQL deprecation](https://docs.cloud.google.com/stackdriver/docs/deprecations/mql)), pricing multipliers, and version lineage (`v1.0.0` → `v3.0.0`).
 
 ---
 

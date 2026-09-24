@@ -4,7 +4,9 @@ Detailed reference companion to [README.md](../README.md) for the Anthropic Mode
 
 ---
 
-## 1. Vertex AI PublisherModel Telemetry Schema
+## 1. Vertex AI PublisherModel Telemetry Schema & Query Engine
+
+> **MQL Deprecation Compliance ([docs](https://docs.cloud.google.com/stackdriver/docs/deprecations/mql)):** Per Google Cloud Observability guidelines (support for MQL ended July 22, 2025), **zero dashboards in this repository use `timeSeriesQueryLanguage` (MQL)**. All scorecards, ratios, percentiles, and tables use native **`timeSeriesFilter`**, **`timeSeriesFilterRatio`**, and **[PromQL](https://cloud.google.com/monitoring/promql)**-compatible aggregations.
 
 All dashboards query native [Vertex AI metrics](https://cloud.google.com/vertex-ai/docs/general/monitoring-metrics) emitted under `aiplatform.googleapis.com/PublisherModel` (`publisher="anthropic"`):
 
