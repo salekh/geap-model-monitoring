@@ -1,6 +1,6 @@
 # Architecture, Metric Schema & FinOps/SRE Playbook
 
-Detailed reference companion to [README.md](../README.md) for the `geap-model-monitoring` dashboard suite.
+Detailed reference companion to [README.md](../README.md) for the Anthropic Model Monitoring on Vertex AI dashboard suite.
 
 ---
 

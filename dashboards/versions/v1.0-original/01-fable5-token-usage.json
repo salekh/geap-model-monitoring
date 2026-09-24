@@ -3,7 +3,7 @@
     "labels": {
         "publisher": "anthropic",
         "platform": "vertex-ai",
-        "suite": "geap-model-monitoring",
+        "suite": "anthropic-model-monitoring",
         "version": "v1-0-original",
         "dashboard-id": "01-fable5-token-usage"
     },

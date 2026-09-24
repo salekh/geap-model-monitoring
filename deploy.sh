@@ -8,8 +8,8 @@
 #
 # Usage:
 #   ./deploy.sh                                  # deploy latest (v3.3-final) to active gcloud project
-#   ./deploy.sh -c nexus-project                 # deploy using a specific gcloud configuration
-#   ./deploy.sh -p my-project-id                 # deploy to a specific project ID
+#   ./deploy.sh -p my-project-id                 # deploy to a specific GCP project ID
+#   ./deploy.sh -c my-gcloud-config              # deploy using a specific gcloud configuration
 #   ./deploy.sh --version old                    # deploy preserved old version (v2.0-old)
 #   ./deploy.sh --version v1.0                   # deploy original baseline version (v1.0-original)
 #   ./deploy.sh --both                           # deploy BOTH old ([v2.0 Old] ...) and new (v3.3) side-by-side!

@@ -27,9 +27,16 @@ Zero-instrumentation **FinOps, SRE, and Capacity control plane** for Anthropic m
 ## Quick Start
 
 ```sh
-./deploy.sh                                  # Deploy latest (v3.3-final) to active gcloud project
-./deploy.sh -c argolis-project --both        # Deploy [v2.0 Old] + v3.3-final side-by-side
-./deploy.sh --version old                    # Deploy preserved v2.0-old (or v1.0, v3.1, v3.2, new)
+# 1. Authenticate with Google Cloud and set your target project
+gcloud auth login
+gcloud config set project YOUR_PROJECT_ID
+
+# 2. Deploy the latest (v3.3-final) dashboards (idempotent: creates or updates in place)
+./deploy.sh -p YOUR_PROJECT_ID
+
+# Optional flags:
+./deploy.sh -p YOUR_PROJECT_ID --both        # Deploy preserved [v2.0 Old] + v3.3-final side-by-side
+./deploy.sh -p YOUR_PROJECT_ID --version old # Deploy a specific version (v1.0, v2.0, v3.1, v3.2, new)
 ./deploy.sh --validate                       # Validate all 42 JSON dashboards (0 tile overlaps)
 ```
 
@@ -37,19 +44,19 @@ Zero-instrumentation **FinOps, SRE, and Capacity control plane** for Anthropic m
 
 ## Dashboard Catalog (`v3.3-final`)
 
-| # | Dashboard JSON | Primary Audience | Key Widgets (`Donut`, `Dual-Axis`, `Table`, `Ratio`) | Live GCP Console (`sa-learning-1`) |
+| # | Dashboard (`v3.3-final`) | Preserved `v2.0` Baseline | Primary Audience | Key Widgets (`Donut`, `Dual-Axis`, `Table`, `Ratio`) |
 |---|---|---|---|---|
-| **00** | [`00-anthropic-model-usage.json`](dashboards/00-anthropic-model-usage.json) | Exec / FinOps | 6 Ratio Scorecards · 3 Share Donuts · Volume vs. Error Dual-Axis · Live Leaderboard | [Open `00` (`v3.3`)](https://console.cloud.google.com/monitoring/dashboards/builder/494f39e1-954a-4dd5-8451-fd3908ad5c09?project=sa-learning-1&duration=P30D) · [[v2.0 Old]](https://console.cloud.google.com/monitoring/dashboards/builder/d105114d-9bad-4995-81e0-3119eeea5e13?project=sa-learning-1&duration=P30D) |
-| **01** | [`01-fable5-token-usage.json`](dashboards/01-fable5-token-usage.json) | AI Eng (`Opus x` / `Fable x`) | Cache Hit Ratio % · Token Volume vs. `p95` Latency Dual-Axis · Regional Table | [Open `01` (`v3.3`)](https://console.cloud.google.com/monitoring/dashboards/builder/64a5328f-902f-4ee5-a9ee-a18ffef20cdd?project=sa-learning-1&duration=P30D) · [[v2.0 Old]](https://console.cloud.google.com/monitoring/dashboards/builder/82ab9e73-ae0e-4ef6-bb0c-8ecf20e6cb60?project=sa-learning-1&duration=P30D) |
-| **02** | [`02-anthropic-fleet-overview.json`](dashboards/02-anthropic-fleet-overview.json) | Platform / Fleet Leads | **Token Share vs. Request Share Donuts** · Multi-Model PTU & Invocation Matrix | [Open `02` (`v3.3`)](https://console.cloud.google.com/monitoring/dashboards/builder/6d36a847-54e0-4d18-b6e1-698ae75410ad?project=sa-learning-1&duration=P30D) · [[v2.0 Old]](https://console.cloud.google.com/monitoring/dashboards/builder/abdd1b99-c407-4994-a1ee-f238403829d0?project=sa-learning-1&duration=P30D) |
-| **03** | [`03-anthropic-latency-performance.json`](dashboards/03-anthropic-latency-performance.json) | SRE / Performance | Unified `p50`/`p95`/`p99` Curves + SLO Lines · **Dual TTFT & E2E Heatmaps** | [Open `03` (`v3.3`)](https://console.cloud.google.com/monitoring/dashboards/builder/d3df09ad-ad8e-4995-b37a-607c70abe68d?project=sa-learning-1&duration=P30D) · [[v2.0 Old]](https://console.cloud.google.com/monitoring/dashboards/builder/4c432e57-a408-45fa-884c-fc44088103ad?project=sa-learning-1&duration=P30D) |
-| **04** | [`04-anthropic-errors-reliability.json`](dashboards/04-anthropic-errors-reliability.json) | SRE / On-Call | True Error & `429` Ratios · Regional `429` Donut · Traffic vs. `429` Dual-Axis | [Open `04` (`v3.3`)](https://console.cloud.google.com/monitoring/dashboards/builder/a2a32f88-77ac-433a-a6de-c265503d13c1?project=sa-learning-1&duration=P30D) · [[v2.0 Old]](https://console.cloud.google.com/monitoring/dashboards/builder/6da26801-7092-44b1-a8ae-d4f685974958?project=sa-learning-1&duration=P30D) |
-| **05** | [`05-anthropic-caching-efficiency.json`](dashboards/05-anthropic-caching-efficiency.json) | FinOps / Prompt Eng | **True Cache Hit %** · **Read/Write Break-Even Ratio** · Pricing Tier Donuts | [Open `05` (`v3.3`)](https://console.cloud.google.com/monitoring/dashboards/builder/2947cbef-4e26-4df1-93ad-fee37ea9c18e?project=sa-learning-1&duration=P30D) · [[v2.0 Old]](https://console.cloud.google.com/monitoring/dashboards/builder/d6d457e6-f1a6-42e3-b624-f8176bc229de?project=sa-learning-1&duration=P30D) |
-| **06** | [`06-anthropic-capacity-quota.json`](dashboards/06-anthropic-capacity-quota.json) | Capacity / Infra | Input/Output Prompt Size Donuts · Shared PayGo vs. PTU Routing · Quota Table | [Open `06` (`v3.3`)](https://console.cloud.google.com/monitoring/dashboards/builder/5fd86181-f1f5-4335-859e-11e613f7b158?project=sa-learning-1&duration=P30D) · [[v2.0 Old]](https://console.cloud.google.com/monitoring/dashboards/builder/fde8d3b7-625b-45e2-b3ee-7c701c5b124b?project=sa-learning-1&duration=P30D) |
+| **00** | [`00-anthropic-model-usage.json`](dashboards/00-anthropic-model-usage.json) | [`v2.0-old`](dashboards/versions/v2.0-old/00-anthropic-model-usage.json) | Exec / FinOps | 6 Ratio Scorecards · 3 Share Donuts · Volume vs. Error Dual-Axis · Live Leaderboard |
+| **01** | [`01-fable5-token-usage.json`](dashboards/01-fable5-token-usage.json) | [`v2.0-old`](dashboards/versions/v2.0-old/01-fable5-token-usage.json) | AI Eng (`Opus x` / `Fable x`) | Cache Hit Ratio % · Token Volume vs. `p95` Latency Dual-Axis · Regional Table |
+| **02** | [`02-anthropic-fleet-overview.json`](dashboards/02-anthropic-fleet-overview.json) | [`v2.0-old`](dashboards/versions/v2.0-old/02-anthropic-fleet-overview.json) | Platform / Fleet Leads | **Token Share vs. Request Share Donuts** · Multi-Model PTU & Invocation Matrix |
+| **03** | [`03-anthropic-latency-performance.json`](dashboards/03-anthropic-latency-performance.json) | [`v2.0-old`](dashboards/versions/v2.0-old/03-anthropic-latency-performance.json) | SRE / Performance | Unified `p50`/`p95`/`p99` Curves + SLO Lines · **Dual TTFT & E2E Heatmaps** |
+| **04** | [`04-anthropic-errors-reliability.json`](dashboards/04-anthropic-errors-reliability.json) | [`v2.0-old`](dashboards/versions/v2.0-old/04-anthropic-errors-reliability.json) | SRE / On-Call | True Error & `429` Ratios · Regional `429` Donut · Traffic vs. `429` Dual-Axis |
+| **05** | [`05-anthropic-caching-efficiency.json`](dashboards/05-anthropic-caching-efficiency.json) | [`v2.0-old`](dashboards/versions/v2.0-old/05-anthropic-caching-efficiency.json) | FinOps / Prompt Eng | **True Cache Hit %** · **Read/Write Break-Even Ratio** · Pricing Tier Donuts |
+| **06** | [`06-anthropic-capacity-quota.json`](dashboards/06-anthropic-capacity-quota.json) | [`v2.0-old`](dashboards/versions/v2.0-old/06-anthropic-capacity-quota.json) | Capacity / Infra | Input/Output Prompt Size Donuts · Shared PayGo vs. PTU Routing · Quota Table |
 
 ---
 
-## Verified 30-Day Telemetry Snapshot (`sa-learning-1`)
+## Sample 30-Day Production Telemetry Benchmark
 
 | Model Family (`model_user_id`) | `location` | Token `type` | 30-Day Volume | FinOps / SRE Benchmark |
 |---|---|---|---:|---|

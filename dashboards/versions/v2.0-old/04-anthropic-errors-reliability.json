@@ -3,7 +3,7 @@
     "labels": {
         "publisher": "anthropic",
         "platform": "vertex-ai",
-        "suite": "geap-model-monitoring",
+        "suite": "anthropic-model-monitoring",
         "version": "v2-0-old",
         "dashboard-id": "04-anthropic-errors-reliability"
     },

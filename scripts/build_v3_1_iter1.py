@@ -20,7 +20,7 @@ def make_labels(dash_id: str):
   return {
       "publisher": "anthropic",
       "platform": "vertex-ai",
-      "suite": "geap-model-monitoring",
+      "suite": "anthropic-model-monitoring",
       "version": "v3-1-iter1",
       "dashboard-id": dash_id,
   }

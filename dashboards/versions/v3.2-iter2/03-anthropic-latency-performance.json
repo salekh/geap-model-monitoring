@@ -3,7 +3,7 @@
     "labels": {
         "publisher": "anthropic",
         "platform": "vertex-ai",
-        "suite": "geap-model-monitoring",
+        "suite": "anthropic-model-monitoring",
         "version": "v3-2-iter2",
         "dashboard-id": "03-latency-performance"
     },
